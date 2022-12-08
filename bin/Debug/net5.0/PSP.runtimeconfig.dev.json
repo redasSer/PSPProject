@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Redis\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Redis\\.nuget\\packages"
+    ]
+  }
+}
