@@ -24,7 +24,7 @@ namespace PSP.Services
 
         public Booking GetById(Guid id)
         {
-            return _db.Bookings.FirstOrDefault(o => o.bookingId == id);
+            return _db.Bookings.Find(id);
         }
         public Booking Create(Booking booking)
         {
@@ -39,6 +39,25 @@ namespace PSP.Services
             _db.SaveChanges();
             
             return newBooking;
+        }
+
+        public Booking Update(Guid id, Booking booking)
+        {
+            var bookingToUpdate = _db.Bookings.Find(id);
+            bookingToUpdate.description = booking.description;
+            bookingToUpdate.time = booking.time;
+            bookingToUpdate.orderId = booking.orderId;
+            
+            _db.SaveChanges();
+
+            return bookingToUpdate;
+        }
+
+        public void Delete(Guid id)
+        {
+            var booking = _db.Bookings.Find(id);
+            _db.Bookings.Remove(booking);
+            _db.SaveChanges();
         }
     }
 }
