@@ -9,5 +9,8 @@ namespace PSP.Services
         List<Booking> GetAll();
         Booking GetById(Guid id);
         Booking Create(Booking booking);
+
+        Booking Update(Guid id, Booking booking);
+        void Delete(Guid id);
     }
 }

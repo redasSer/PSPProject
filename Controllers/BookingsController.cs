@@ -36,5 +36,17 @@ namespace PSP.Controllers
         {
             return _bookingsService.Create(booking);
         }
+
+        [HttpPatch("{id:guid}")]
+        public Booking Update(Guid id, Booking booking)
+        {
+            return _bookingsService.Update(id, booking);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public void Delete(Guid id)
+        {
+            _bookingsService.Delete(id);
+        }
     }
 }
