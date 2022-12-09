@@ -1,8 +1,10 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\Redis\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Redis\\.nuget\\packages"
+      "C:\\Users\\JUSTA\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\JUSTA\\.nuget\\packages",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+      "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet"
     ]
   }
 }
