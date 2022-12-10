@@ -9,9 +9,9 @@ namespace PSP.entity
     public class EmployeeShift
     {
 
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string EmployeeShiftsId { get; set; }
+        public Guid EmployeeShiftsId { get; set; }
 
         [Required]
         public string EmployeeId { get; set; }

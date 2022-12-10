@@ -55,9 +55,10 @@ namespace PSP.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return BadRequest();
             }
-            if (id != employeeShift.EmployeeShiftsId)
+            if (id != employeeShift.EmployeeShiftsId.ToString())
             {
                 return BadRequest();
             }
@@ -95,6 +96,7 @@ namespace PSP.Controllers
             }
             catch( Exception ex)
             {
+                Console.WriteLine(ex);
                 return BadRequest();
             }
 
@@ -105,7 +107,7 @@ namespace PSP.Controllers
             }
             catch (DbUpdateException)
             {
-                if (EmployeeShiftExists(employeeShift.EmployeeShiftsId))
+                if (EmployeeShiftExists(employeeShift.EmployeeShiftsId.ToString()))
                 {
                     return Conflict();
                 }
@@ -136,7 +138,7 @@ namespace PSP.Controllers
 
         private bool EmployeeShiftExists(string id)
         {
-            return _context.EmployeeShifts.Any(e => e.EmployeeShiftsId == id);
+            return _context.EmployeeShifts.Any(e => e.EmployeeShiftsId.ToString() == id);
         }
     }
 }
