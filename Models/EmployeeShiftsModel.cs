@@ -13,7 +13,6 @@ namespace PSP.Models
     public class EmployeeShiftsModel
     {
         [JsonProperty("employeeShiftsId")]
-        [Required]
         public string EmployeeShiftsId { get; set; }
 
         [JsonProperty("employeeId")]
@@ -32,10 +31,25 @@ namespace PSP.Models
         {
             var config = new MapperConfiguration(cfg =>
                 cfg.CreateMap<EmployeeShiftsModel, EmployeeShift>()
-                .ForMember(dest => dest.WorkDay, act => act.Ignore()));
+                .ForMember(dest => dest.WorkDay, act => act.Ignore())
+                .ForMember(dest => dest.EmployeeShiftsId, act => act.Ignore()));
             var mapper = new Mapper(config);
             EmployeeShift employeeShift = mapper.Map<EmployeeShiftsModel, EmployeeShift>(this);
+
             employeeShift.WorkDay = this.WorkDay.Convert();
+            try
+            {
+                employeeShift.EmployeeShiftsId = Guid.Parse(this.EmployeeShiftsId);
+            }
+            catch (ArgumentNullException)
+            {
+                employeeShift.EmployeeShiftsId = new Guid();
+            }
+            catch (FormatException)
+            {
+                employeeShift.EmployeeShiftsId = new Guid();
+            }
+
             return employeeShift;
         }
 
