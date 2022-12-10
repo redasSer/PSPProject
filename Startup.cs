@@ -31,7 +31,7 @@ namespace PSP
             services.AddScoped<IBookingsService, BookingService>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v1" });
+                    c.SwaggerDoc("v2", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v2" });
             });
 
 
@@ -44,7 +44,7 @@ namespace PSP
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiddlewareExamples v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "MiddlewareExamples v2"));
             }
             else
             {
