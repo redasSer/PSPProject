@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JUSTA\\Source\\Repos\\PSPProject\\PSP.csproj": {}
+    "C:\\Users\\JUSTA\\source\\repos\\PSPProject\\PSP.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JUSTA\\Source\\Repos\\PSPProject\\PSP.csproj": {
+    "C:\\Users\\JUSTA\\source\\repos\\PSPProject\\PSP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUSTA\\Source\\Repos\\PSPProject\\PSP.csproj",
+        "projectUniqueName": "C:\\Users\\JUSTA\\source\\repos\\PSPProject\\PSP.csproj",
         "projectName": "PSP",
-        "projectPath": "C:\\Users\\JUSTA\\Source\\Repos\\PSPProject\\PSP.csproj",
+        "projectPath": "C:\\Users\\JUSTA\\source\\repos\\PSPProject\\PSP.csproj",
         "packagesPath": "C:\\Users\\JUSTA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUSTA\\Source\\Repos\\PSPProject\\obj\\",
+        "outputPath": "C:\\Users\\JUSTA\\source\\repos\\PSPProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -46,6 +46,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -59,6 +63,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.17, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

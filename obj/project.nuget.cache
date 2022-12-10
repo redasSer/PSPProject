@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "yCfW744FD0TM1xWrh6pao4PjPCaQcglBLzlS+nB+/HTgXk8h8CwQ/ddtAdAh+6plr+0z7zLyHW3s+ZHARnjVVg==",
+  "dgSpecHash": "kCr66smCRCPoeYTzQFe8ehf1T4k/jZZpDY9Zbb1/pI49lm6yDvtSEoUBpoHwy9fw1XJAG8R59mnk0AjNymgN7A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\JUSTA\\Source\\Repos\\PSPProject\\PSP.csproj",
+  "projectFilePath": "C:\\Users\\JUSTA\\source\\repos\\PSPProject\\PSP.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\JUSTA\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\microsoft.data.sqlite.core\\5.0.17\\microsoft.data.sqlite.core.5.0.17.nupkg.sha512",
@@ -28,6 +29,7 @@
     "C:\\Users\\JUSTA\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\microsoft.openapi\\1.1.4\\microsoft.openapi.1.1.4.nupkg.sha512",
+    "C:\\Users\\JUSTA\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.4\\sqlitepclraw.bundle_e_sqlite3.2.0.4.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
     "C:\\Users\\JUSTA\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",

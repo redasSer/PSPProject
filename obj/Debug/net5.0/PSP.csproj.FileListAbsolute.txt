@@ -139,3 +139,5 @@ C:\Users\JUSTA\Source\Repos\PSPProject\bin\Debug\net5.0\Swashbuckle.AspNetCore.S
 C:\Users\JUSTA\Source\Repos\PSPProject\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\JUSTA\Source\Repos\PSPProject\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\JUSTA\Source\Repos\PSPProject\obj\Debug\net5.0\PSP.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\JUSTA\source\repos\PSPProject\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\JUSTA\source\repos\PSPProject\bin\Debug\net5.0\Newtonsoft.Json.dll
