@@ -8,67 +8,66 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PSP.Models
+namespace PSP.Models;
+
+public class EmployeeShiftsModel
 {
-    public class EmployeeShiftsModel
+    [JsonProperty("employeeShiftsId")]
+    public Guid EmployeeShiftsId { get; set; }
+
+    [JsonProperty("employeeId")]
+    [Required]
+    public Guid EmployeeId { get; set; }
+
+    [JsonProperty("shiftId")]
+    [Required]
+    public Guid ShiftId { get; set; }
+
+    [JsonProperty("workDay")]
+    [Required]
+    public DateOnly WorkDay { get; set; }
+
+    public EmployeeShift Convert()
     {
-        [JsonProperty("employeeShiftsId")]
-        public Guid EmployeeShiftsId { get; set; }
+        var config = new MapperConfiguration(cfg =>
+            cfg.CreateMap<EmployeeShiftsModel, EmployeeShift>()
+            .ForMember(dest => dest.WorkDay, act => act.Ignore())
+            .ForMember(dest => dest.EmployeeShiftsId, act => act.Ignore()));
+        var mapper = new Mapper(config);
+        EmployeeShift employeeShift = mapper.Map<EmployeeShiftsModel, EmployeeShift>(this);
 
-        [JsonProperty("employeeId")]
-        [Required]
-        public Guid EmployeeId { get; set; }
-
-        [JsonProperty("shiftId")]
-        [Required]
-        public Guid ShiftId { get; set; }
-
-        [JsonProperty("workDay")]
-        [Required]
-        public DateOnly WorkDay { get; set; }
-
-        public EmployeeShift Convert()
+        employeeShift.WorkDay = this.WorkDay.Convert();
+        try
         {
-            var config = new MapperConfiguration(cfg =>
-                cfg.CreateMap<EmployeeShiftsModel, EmployeeShift>()
-                .ForMember(dest => dest.WorkDay, act => act.Ignore())
-                .ForMember(dest => dest.EmployeeShiftsId, act => act.Ignore()));
-            var mapper = new Mapper(config);
-            EmployeeShift employeeShift = mapper.Map<EmployeeShiftsModel, EmployeeShift>(this);
-
-            employeeShift.WorkDay = this.WorkDay.Convert();
-            try
-            {
-                employeeShift.EmployeeShiftsId = Guid.Parse(this.EmployeeShiftsId.ToString());
-            }
-            catch (ArgumentNullException)
-            {
-                employeeShift.EmployeeShiftsId = new Guid();
-            }
-            catch (FormatException)
-            {
-                employeeShift.EmployeeShiftsId = new Guid();
-            }
-
-            return employeeShift;
+            employeeShift.EmployeeShiftsId = Guid.Parse(this.EmployeeShiftsId.ToString());
+        }
+        catch (ArgumentNullException)
+        {
+            employeeShift.EmployeeShiftsId = new Guid();
+        }
+        catch (FormatException)
+        {
+            employeeShift.EmployeeShiftsId = new Guid();
         }
 
-        public static EmployeeShiftsModel Convert( EmployeeShift employeeShift)
-        {
-            var config = new MapperConfiguration(cfg =>
-                cfg.CreateMap<EmployeeShift, EmployeeShiftsModel>()
-                .ForMember(dest => dest.WorkDay, act => act.Ignore()));
-            var mapper = new Mapper(config);
-            EmployeeShiftsModel employeeShiftsModel = mapper.Map<EmployeeShift, EmployeeShiftsModel>(employeeShift);
-            employeeShiftsModel.WorkDay = DateOnly.Convert(employeeShift.WorkDay);
-            return employeeShiftsModel;
-        }
+        return employeeShift;
+    }
 
-        public static List<EmployeeShiftsModel> Convert(List<EmployeeShift> employeeShifts)
-        {
-            List<EmployeeShiftsModel> employeeShiftsModels = new List<EmployeeShiftsModel>();
-            employeeShifts.ForEach(shift => employeeShiftsModels.Add(Convert(shift)));
-            return employeeShiftsModels;
-        }
+    public static EmployeeShiftsModel Convert( EmployeeShift employeeShift)
+    {
+        var config = new MapperConfiguration(cfg =>
+            cfg.CreateMap<EmployeeShift, EmployeeShiftsModel>()
+            .ForMember(dest => dest.WorkDay, act => act.Ignore()));
+        var mapper = new Mapper(config);
+        EmployeeShiftsModel employeeShiftsModel = mapper.Map<EmployeeShift, EmployeeShiftsModel>(employeeShift);
+        employeeShiftsModel.WorkDay = DateOnly.Convert(employeeShift.WorkDay);
+        return employeeShiftsModel;
+    }
+
+    public static List<EmployeeShiftsModel> Convert(List<EmployeeShift> employeeShifts)
+    {
+        List<EmployeeShiftsModel> employeeShiftsModels = new List<EmployeeShiftsModel>();
+        employeeShifts.ForEach(shift => employeeShiftsModels.Add(Convert(shift)));
+        return employeeShiftsModels;
     }
 }

@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PSP.entity
-{
+namespace PSP.entity;
+
     [Table(nameof(EmployeeShift))]
 
     public class EmployeeShift
@@ -23,4 +23,4 @@ namespace PSP.entity
         public DateTime WorkDay { get; set; }
 
     }
-}
+

@@ -1,13 +1,12 @@
-﻿namespace PSP.Enums
+﻿namespace PSP.Enums;
+
+public enum DayOfWeek
 {
-    public enum DayOfWeek
-    {
-        MONDAY,
-        TUESDAY,
-        WEDNESDAY,
-        THURSDAY,
-        FRIDAY,
-        SATURDAY,
-        SUNDAY
-    }
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
 }

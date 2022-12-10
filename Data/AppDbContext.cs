@@ -2,8 +2,7 @@
 using PSP.entity;
 using PSP.Models;
 
-namespace PSP.Data
-{
+namespace PSP.Data;
     public class AppDbContext : DbContext
     {
         public DbSet<Booking> Bookings { get; set; }
@@ -25,4 +24,3 @@ namespace PSP.Data
 
         }
     }
-}
