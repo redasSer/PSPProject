@@ -1,9 +1,8 @@
-﻿namespace PSP.Enums
+﻿namespace PSP.Enums;
+
+public enum CardStatus
 {
-    public enum CardStatus
-    {
-        ASSIGNED,
-        STORAGE,
-        LOST
-    }
+    ASSIGNED,
+    STORAGE,
+    LOST
 }

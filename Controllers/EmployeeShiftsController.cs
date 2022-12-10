@@ -9,8 +9,8 @@ using PSP.Data;
 using PSP.entity;
 using PSP.Models;
 
-namespace PSP.Controllers
-{
+namespace PSP.Controllers;
+
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeShiftsController : ControllerBase
@@ -141,4 +141,4 @@ namespace PSP.Controllers
             return _context.EmployeeShifts.Any(e => e.EmployeeShiftsId.ToString() == id);
         }
     }
-}
+
