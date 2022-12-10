@@ -7,9 +7,10 @@ namespace PSP.Data;
     {
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<EmployeeShift> EmployeeShifts { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(@"Data Source=MyDb.db");
         }
@@ -20,7 +21,5 @@ namespace PSP.Data;
             //        .HasOne < Employee>()
             //        .WithMany()
             //        .HasForeignKey(x => x.EmployeeId); ;
-
-
         }
     }
