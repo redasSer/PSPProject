@@ -13,15 +13,15 @@ namespace PSP.Models
     public class EmployeeShiftsModel
     {
         [JsonProperty("employeeShiftsId")]
-        public string EmployeeShiftsId { get; set; }
+        public Guid EmployeeShiftsId { get; set; }
 
         [JsonProperty("employeeId")]
         [Required]
-        public string EmployeeId { get; set; }
+        public Guid EmployeeId { get; set; }
 
         [JsonProperty("shiftId")]
         [Required]
-        public string ShiftId { get; set; }
+        public Guid ShiftId { get; set; }
 
         [JsonProperty("workDay")]
         [Required]
@@ -39,7 +39,7 @@ namespace PSP.Models
             employeeShift.WorkDay = this.WorkDay.Convert();
             try
             {
-                employeeShift.EmployeeShiftsId = Guid.Parse(this.EmployeeShiftsId);
+                employeeShift.EmployeeShiftsId = Guid.Parse(this.EmployeeShiftsId.ToString());
             }
             catch (ArgumentNullException)
             {
