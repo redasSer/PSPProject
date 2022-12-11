@@ -8,7 +8,7 @@ namespace PSP.Data;
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<EmployeeShift> EmployeeShifts { get; set; }
         public DbSet<Shift> Shifts { get; set; }
-
+        public DbSet<Employee> Employees { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
