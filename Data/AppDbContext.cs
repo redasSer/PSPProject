@@ -17,9 +17,13 @@ namespace PSP.Data;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //    modelBuilder.Entity<EmployeeShiftsModel>()
-            //        .HasOne < Employee>()
-            //        .WithMany()
-            //        .HasForeignKey(x => x.EmployeeId); ;
-        }
+        //    modelBuilder.Entity<EmployeeShiftsModel>()
+        //        .HasOne < Employee>()
+        //        .WithMany()
+        //        .HasForeignKey(x => x.EmployeeId); ;
+
+        modelBuilder.Entity<Shift>().Property(e => e.StartTimeTS).HasColumnName("StartTime") ;
+        modelBuilder.Entity<Shift>().Property(e => e.EndTimeTS).HasColumnName("EndTime");
+
     }
+}

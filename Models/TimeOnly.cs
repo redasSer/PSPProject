@@ -20,7 +20,7 @@ namespace PSP.Models
         public int Millisecond { get; set; }
 
         [JsonProperty("ticks")]
-        public int Ticks { get; set; }
+        public long Ticks { get; set; }
 
     }
 }
