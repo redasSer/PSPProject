@@ -9,6 +9,8 @@ namespace PSP.Data;
         public DbSet<EmployeeShift> EmployeeShifts { get; set; }
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeCard> EmployeeCards { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

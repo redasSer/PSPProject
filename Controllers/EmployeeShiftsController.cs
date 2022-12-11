@@ -88,7 +88,8 @@ namespace PSP.Controllers;
         [HttpPost]
         public async Task<ActionResult<EmployeeShiftsModel>> PostEmployeeShift(EmployeeShiftsModel employeeShiftsModel)
         {
-            EmployeeShift employeeShift;
+        employeeShiftsModel.EmployeeShiftsId = new Guid();
+        EmployeeShift employeeShift;
             try
             {
                 employeeShift = employeeShiftsModel.Convert();

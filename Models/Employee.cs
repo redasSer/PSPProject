@@ -2,6 +2,7 @@
 using PSP.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace PSP.Models
     [Table("Employee")]
     public class Employee
     {
+        [Key]
         [JsonProperty("employeeId")]
         public Guid EmployeeId { get; set; }
 
