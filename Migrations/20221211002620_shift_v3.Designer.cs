@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221211002620_shift_v3")]
+    partial class shiftv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -42,14 +45,6 @@ namespace PSP.Migrations
                     b.Property<Guid>("ShiftId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
-
-                    b.Property<TimeSpan>("EndTimeTS")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("EndTime");
-
-                    b.Property<TimeSpan>("StartTimeTS")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("StartTime");
 
                     b.HasKey("ShiftId");
 
