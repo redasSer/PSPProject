@@ -2,8 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace PSP.Models;
 [Table("Shift")]
