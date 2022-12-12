@@ -95,6 +95,40 @@ namespace PSP.Migrations
                     b.ToTable("EmployeeCard");
                 });
 
+            modelBuilder.Entity("PSP.Models.Permission", b =>
+                {
+                    b.Property<Guid>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PermissionTypeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PermissionId");
+
+                    b.ToTable("Permission");
+                });
+
+            modelBuilder.Entity("PSP.Models.PermissionType", b =>
+                {
+                    b.Property<Guid>("PermissionTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PermissionTypeId");
+
+                    b.ToTable("PermissionType");
+                });
+
             modelBuilder.Entity("PSP.Models.Role", b =>
                 {
                     b.Property<Guid>("RoleId")
