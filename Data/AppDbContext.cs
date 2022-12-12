@@ -12,6 +12,10 @@ namespace PSP.Data;
         public DbSet<EmployeeCard> EmployeeCards { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<PermissionType> PermissionTypes { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+
+
+
 
 
 
