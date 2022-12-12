@@ -11,13 +11,12 @@ namespace PSP.Data;
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeCard> EmployeeCards { get; set; }
         public DbSet<Role> Roles { get; set; }
-<<<<<<< Updated upstream
-=======
         public DbSet<PermissionType> PermissionTypes { get; set; }
         public DbSet<Permission> Permissions { get; set; }
 
 
->>>>>>> Stashed changes
+
+
 
 
 
