@@ -2,20 +2,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PSP.Models
+namespace PSP.Models;
+
+[Table("Booking")]
+public class Booking
 {
-    [Table("Booking")]
-    public class Booking
-    {
-        [Required]
-        public Guid bookingId { get; set; }
-        
-        [Required]
-        public Guid orderId { get; set; }
-        
-        [Required]
-        public DateTime time { get; set; }
-        
-        public string description { get; set; }
-    }
+    [Required]
+    public Guid bookingId { get; set; }
+    
+    [Required]
+    public Guid orderId { get; set; }
+    
+    [Required]
+    public DateTime time { get; set; }
+    
+    public string description { get; set; }
 }

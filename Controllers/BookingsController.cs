@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using PSP.Models;
 using PSP.Services;
 
-namespace PSP.Controllers
-{
+namespace PSP.Controllers;
+
     [ApiController]
     [Route("api/[controller]")] ///api/booking
     public class BookingController
@@ -49,4 +49,3 @@ namespace PSP.Controllers
             _bookingsService.Delete(id);
         }
     }
-}

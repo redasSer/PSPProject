@@ -1,9 +1,8 @@
-﻿namespace PSP.Enums
+﻿namespace PSP.Enums;
+
+public enum CustomerStatus
 {
-    public enum CustomerStatus
-    {
-        REGISTERED,
-        NOTREGISTERED,
-        DELETED
-    }
+    REGISTERED,
+    NOTREGISTERED,
+    DELETED
 }

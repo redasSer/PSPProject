@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
+#nullable disable
+
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
@@ -13,8 +15,7 @@ namespace PSP.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.17");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
 
             modelBuilder.Entity("PSP.Models.Booking", b =>
                 {
@@ -34,6 +35,156 @@ namespace PSP.Migrations
                     b.HasKey("bookingId");
 
                     b.ToTable("Booking");
+                });
+
+            modelBuilder.Entity("PSP.Models.Employee", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("EmployeeId");
+
+                    b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("PSP.Models.EmployeeCard", b =>
+                {
+                    b.Property<Guid>("EmployeeCardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EmployeeCardId");
+
+                    b.ToTable("EmployeeCard");
+                });
+
+            modelBuilder.Entity("PSP.Models.Permission", b =>
+                {
+                    b.Property<Guid>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PermissionTypeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PermissionId");
+
+                    b.ToTable("Permission");
+                });
+
+            modelBuilder.Entity("PSP.Models.PermissionType", b =>
+                {
+                    b.Property<Guid>("PermissionTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PermissionTypeId");
+
+                    b.ToTable("PermissionType");
+                });
+
+            modelBuilder.Entity("PSP.Models.Role", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("PSP.Models.Shift", b =>
+                {
+                    b.Property<Guid>("ShiftId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeSpan>("EndTimeTS")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("EndTime");
+
+                    b.Property<TimeSpan>("StartTimeTS")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("StartTime");
+
+                    b.HasKey("ShiftId");
+
+                    b.ToTable("Shift");
+                });
+
+            modelBuilder.Entity("PSP.entity.EmployeeShift", b =>
+                {
+                    b.Property<Guid>("EmployeeShiftsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ShiftId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("WorkDay")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("EmployeeShiftsId");
+
+                    b.ToTable("EmployeeShift");
                 });
 #pragma warning restore 612, 618
         }
