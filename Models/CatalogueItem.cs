@@ -12,8 +12,6 @@ public class CatalogueItem
     public Guid ClientId { get; set; }
     public string Name { get; set; }
     public string Category { get; set; }
-    
-    [Required]
     public double Price { get; set; }
     public int LoyaltyPointsReward { get; set; }
     public int Tax { get; set; }
