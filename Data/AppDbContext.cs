@@ -17,7 +17,7 @@ namespace PSP.Data;
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<InventoryUsage> InventoryUsages { get; set; }
         public DbSet<Modifier> Modifiers { get; set; }
-
+        public DbSet<OrderedItemModification> OrderedItemModifications { get; set; }
 
 
 
