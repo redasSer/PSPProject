@@ -12,27 +12,27 @@ namespace PSP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InventoryUsageController : ControllerBase
+    public class InventoryUsagesController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public InventoryUsageController(AppDbContext context)
+        public InventoryUsagesController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/InventoryUsage
+        // GET: api/InventoryUsages
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventoryUsage>>> GetInventoryUsage()
+        public async Task<ActionResult<IEnumerable<InventoryUsage>>> GetInventoryUsages()
         {
-            return await _context.InventoryUsage.ToListAsync();
+            return await _context.InventoryUsages.ToListAsync();
         }
 
-        // GET: api/InventoryUsage/5
+        // GET: api/InventoryUsages/5
         [HttpGet("{id}")]
         public async Task<ActionResult<InventoryUsage>> GetInventoryUsage(Guid id)
         {
-            var inventoryUsage = await _context.InventoryUsage.FindAsync(id);
+            var inventoryUsage = await _context.InventoryUsages.FindAsync(id);
 
             if (inventoryUsage == null)
             {
@@ -42,10 +42,10 @@ namespace PSP.Controllers
             return inventoryUsage;
         }
 
-        // PUT: api/InventoryUsage/5
+        // PUT: api/InventoryUsages/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory(Guid id, InventoryUsage inventoryUsage)
+        public async Task<IActionResult> PutInventoryUsage(Guid id, InventoryUsage inventoryUsage)
         {
             if (id != inventoryUsage.InventoryUsageId)
             {
@@ -73,29 +73,29 @@ namespace PSP.Controllers
             return NoContent();
         }
 
-        // POST: api/InventoryUsage
+        // POST: api/InventoryUsages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<InventoryUsage>> PostInventoryUsage(InventoryUsage inventoryUsage)
         {
             inventoryUsage.InventoryUsageId = new Guid();
-            _context.InventoryUsage.Add(inventoryUsage);
+            _context.InventoryUsages.Add(inventoryUsage);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetInventoryUsage", new { id = inventoryUsage.InventoryUsageId }, inventoryUsage);
         }
 
-        // DELETE: api/InventoryUsage/5
+        // DELETE: api/InventoryUsages/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInventoryUsage(Guid id)
         {
-            var inventoryUsage = await _context.InventoryUsage.FindAsync(id);
+            var inventoryUsage = await _context.InventoryUsages.FindAsync(id);
             if (inventoryUsage == null)
             {
                 return NotFound();
             }
 
-            _context.InventoryUsage.Remove(inventoryUsage);
+            _context.InventoryUsages.Remove(inventoryUsage);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -103,7 +103,7 @@ namespace PSP.Controllers
 
         private bool InventoryUsageExists(Guid id)
         {
-            return _context.InventoryUsage.Any(e => e.InventoryUsageId == id);
+            return _context.InventoryUsages.Any(e => e.InventoryUsageId == id);
         }
     }
 }
