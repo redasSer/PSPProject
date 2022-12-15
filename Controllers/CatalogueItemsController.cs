@@ -29,10 +29,10 @@ namespace PSP.Controllers
         }
 
         // GET: api/CatalogueItems/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CatalogueItem>> GetCatalogueItem(Guid id)
+        [HttpGet("{catalogueItemId}")]
+        public async Task<ActionResult<CatalogueItem>> GetCatalogueItem(Guid catalogueItemId)
         {
-            var catalogueItem = await _context.CatalogueItems.FindAsync(id);
+            var catalogueItem = await _context.CatalogueItems.FindAsync(catalogueItemId);
 
             if (catalogueItem == null)
             {
@@ -44,10 +44,10 @@ namespace PSP.Controllers
 
         // PUT: api/CatalogueItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCatalogueItem(Guid id, CatalogueItem catalogueItem)
+        [HttpPut("{catalogueItemId}")]
+        public async Task<IActionResult> PutCatalogueItem(Guid catalogueItemId, CatalogueItem catalogueItem)
         {
-            if (id != catalogueItem.CatalogueItemId)
+            if (catalogueItemId != catalogueItem.CatalogueItemId)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace PSP.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CatalogueItemExists(id))
+                if (!CatalogueItemExists(catalogueItemId))
                 {
                     return NotFound();
                 }
@@ -82,14 +82,14 @@ namespace PSP.Controllers
             _context.CatalogueItems.Add(catalogueItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCatalogueItem", new { id = catalogueItem.CatalogueItemId }, catalogueItem);
+            return CreatedAtAction("GetCatalogueItem", new { catalogueItemId = catalogueItem.CatalogueItemId }, catalogueItem);
         }
 
         // DELETE: api/CatalogueItems/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCatalogueItem(Guid id)
+        [HttpDelete("{catalogueItemId}")]
+        public async Task<IActionResult> DeleteCatalogueItem(Guid catalogueItemId)
         {
-            var catalogueItem = await _context.CatalogueItems.FindAsync(id);
+            var catalogueItem = await _context.CatalogueItems.FindAsync(catalogueItemId);
             if (catalogueItem == null)
             {
                 return NotFound();
@@ -101,9 +101,9 @@ namespace PSP.Controllers
             return NoContent();
         }
 
-        private bool CatalogueItemExists(Guid id)
+        private bool CatalogueItemExists(Guid catalogueItemId)
         {
-            return _context.CatalogueItems.Any(e => e.CatalogueItemId == id);
+            return _context.CatalogueItems.Any(e => e.CatalogueItemId == catalogueItemId);
         }
     }
 }

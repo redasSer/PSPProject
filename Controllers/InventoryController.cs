@@ -29,10 +29,10 @@ namespace PSP.Controllers
         }
 
         // GET: api/Inventory/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Inventory>> GetInventory(Guid id)
+        [HttpGet("{inventoryId}")]
+        public async Task<ActionResult<Inventory>> GetInventory(Guid inventoryId)
         {
-            var inventory = await _context.Inventory.FindAsync(id);
+            var inventory = await _context.Inventory.FindAsync(inventoryId);
 
             if (inventory == null)
             {
@@ -44,10 +44,10 @@ namespace PSP.Controllers
 
         // PUT: api/Inventory/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory(Guid id, Inventory inventory)
+        [HttpPut("{inventoryId}")]
+        public async Task<IActionResult> PutInventory(Guid inventoryId, Inventory inventory)
         {
-            if (id != inventory.ItemId)
+            if (inventoryId != inventory.ItemId)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace PSP.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!InventoryExists(id))
+                if (!InventoryExists(inventoryId))
                 {
                     return NotFound();
                 }
@@ -82,14 +82,14 @@ namespace PSP.Controllers
             _context.Inventory.Add(inventory);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetInventory", new { id = inventory.ItemId }, inventory);
+            return CreatedAtAction("GetInventory", new { inventoryId = inventory.ItemId }, inventory);
         }
 
         // DELETE: api/Inventory/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInventory(Guid id)
+        [HttpDelete("{inventoryId}")]
+        public async Task<IActionResult> DeleteInventory(Guid inventoryId)
         {
-            var inventory = await _context.Inventory.FindAsync(id);
+            var inventory = await _context.Inventory.FindAsync(inventoryId);
             if (inventory == null)
             {
                 return NotFound();
@@ -101,9 +101,9 @@ namespace PSP.Controllers
             return NoContent();
         }
 
-        private bool InventoryExists(Guid id)
+        private bool InventoryExists(Guid inventoryId)
         {
-            return _context.Inventory.Any(e => e.ItemId == id);
+            return _context.Inventory.Any(e => e.ItemId == inventoryId);
         }
     }
 }

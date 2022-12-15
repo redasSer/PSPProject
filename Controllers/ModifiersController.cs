@@ -29,10 +29,10 @@ namespace PSP.Controllers
         }
 
         // GET: api/Modifiers/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Modifier>> GetModifier(Guid id)
+        [HttpGet("{modifierId}")]
+        public async Task<ActionResult<Modifier>> GetModifier(Guid modifierId)
         {
-            var modifier = await _context.Modifiers.FindAsync(id);
+            var modifier = await _context.Modifiers.FindAsync(modifierId);
 
             if (modifier == null)
             {
@@ -44,10 +44,10 @@ namespace PSP.Controllers
 
         // PUT: api/Modifiers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory(Guid id, Modifier modifier)
+        [HttpPut("{modifierId}")]
+        public async Task<IActionResult> PutInventory(Guid modifierId, Modifier modifier)
         {
-            if (id != modifier.ModifierId)
+            if (modifierId != modifier.ModifierId)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace PSP.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ModifierExists(id))
+                if (!ModifierExists(modifierId))
                 {
                     return NotFound();
                 }
@@ -82,14 +82,14 @@ namespace PSP.Controllers
             _context.Modifiers.Add(modifier);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetModifier", new { id = modifier.ModifierId }, modifier);
+            return CreatedAtAction("GetModifier", new { modifierId = modifier.ModifierId }, modifier);
         }
 
         // DELETE: api/Modifiers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteModifier(Guid id)
+        [HttpDelete("{modifierId}")]
+        public async Task<IActionResult> DeleteModifier(Guid modifierId)
         {
-            var modifier = await _context.Modifiers.FindAsync(id);
+            var modifier = await _context.Modifiers.FindAsync(modifierId);
             if (modifier == null)
             {
                 return NotFound();
@@ -101,9 +101,9 @@ namespace PSP.Controllers
             return NoContent();
         }
 
-        private bool ModifierExists(Guid id)
+        private bool ModifierExists(Guid modifierId)
         {
-            return _context.Modifiers.Any(e => e.ModifierId == id);
+            return _context.Modifiers.Any(e => e.ModifierId == modifierId);
         }
     }
 }

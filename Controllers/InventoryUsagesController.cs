@@ -29,10 +29,10 @@ namespace PSP.Controllers
         }
 
         // GET: api/InventoryUsages/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<InventoryUsage>> GetInventoryUsage(Guid id)
+        [HttpGet("{inventoryUsageId}")]
+        public async Task<ActionResult<InventoryUsage>> GetInventoryUsage(Guid inventoryUsageId)
         {
-            var inventoryUsage = await _context.InventoryUsages.FindAsync(id);
+            var inventoryUsage = await _context.InventoryUsages.FindAsync(inventoryUsageId);
 
             if (inventoryUsage == null)
             {
@@ -44,10 +44,10 @@ namespace PSP.Controllers
 
         // PUT: api/InventoryUsages/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventoryUsage(Guid id, InventoryUsage inventoryUsage)
+        [HttpPut("{inventoryUsageId}")]
+        public async Task<IActionResult> PutInventoryUsage(Guid inventoryUsageId, InventoryUsage inventoryUsage)
         {
-            if (id != inventoryUsage.InventoryUsageId)
+            if (inventoryUsageId != inventoryUsage.InventoryUsageId)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace PSP.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!InventoryUsageExists(id))
+                if (!InventoryUsageExists(inventoryUsageId))
                 {
                     return NotFound();
                 }
@@ -82,14 +82,14 @@ namespace PSP.Controllers
             _context.InventoryUsages.Add(inventoryUsage);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetInventoryUsage", new { id = inventoryUsage.InventoryUsageId }, inventoryUsage);
+            return CreatedAtAction("GetInventoryUsage", new { inventoryUsageId = inventoryUsage.InventoryUsageId }, inventoryUsage);
         }
 
         // DELETE: api/InventoryUsages/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInventoryUsage(Guid id)
+        [HttpDelete("{inventoryUsageId}")]
+        public async Task<IActionResult> DeleteInventoryUsage(Guid inventoryUsageId)
         {
-            var inventoryUsage = await _context.InventoryUsages.FindAsync(id);
+            var inventoryUsage = await _context.InventoryUsages.FindAsync(inventoryUsageId);
             if (inventoryUsage == null)
             {
                 return NotFound();
@@ -101,9 +101,9 @@ namespace PSP.Controllers
             return NoContent();
         }
 
-        private bool InventoryUsageExists(Guid id)
+        private bool InventoryUsageExists(Guid inventoryUsageId)
         {
-            return _context.InventoryUsages.Any(e => e.InventoryUsageId == id);
+            return _context.InventoryUsages.Any(e => e.InventoryUsageId == inventoryUsageId);
         }
     }
 }
