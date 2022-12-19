@@ -29,6 +29,8 @@ public class Startup
         services.AddDbContext<AppDbContext>();
         services.AddControllersWithViews();
         services.AddScoped<IBookingsService, BookingService>();
+        services.AddScoped<IClientService, ClientService>();
+
         services.AddSwaggerGen(c =>
         {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v2" });

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219092058_Add_constrains_1")]
+    partial class Addconstrains1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -101,8 +104,6 @@ namespace PSP.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.HasIndex("LocationId");
-
                     b.HasIndex("RoleId");
 
                     b.ToTable("Employee");
@@ -125,67 +126,7 @@ namespace PSP.Migrations
 
                     b.HasKey("EmployeeCardId");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LocationId");
-
                     b.ToTable("EmployeeCard");
-                });
-
-            modelBuilder.Entity("PSP.Models.EmployeeShift", b =>
-                {
-                    b.Property<Guid>("EmployeeShiftsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ShiftId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("WorkDay")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("EmployeeShiftsId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ShiftId");
-
-                    b.ToTable("EmployeeShift");
-                });
-
-            modelBuilder.Entity("PSP.Models.Location", b =>
-                {
-                    b.Property<Guid>("LocationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("Tax")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("Timezone")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("LocationId");
-
-                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("PSP.Models.Permission", b =>
@@ -266,61 +207,37 @@ namespace PSP.Migrations
                     b.ToTable("Shift");
                 });
 
+            modelBuilder.Entity("PSP.entity.EmployeeShift", b =>
+                {
+                    b.Property<Guid>("EmployeeShiftsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ShiftId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("WorkDay")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("EmployeeShiftsId");
+
+                    b.ToTable("EmployeeShift");
+                });
+
             modelBuilder.Entity("PSP.Models.Employee", b =>
                 {
-                    b.HasOne("PSP.Models.Location", "location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PSP.Models.Role", "role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("location");
-
                     b.Navigation("role");
-                });
-
-            modelBuilder.Entity("PSP.Models.EmployeeCard", b =>
-                {
-                    b.HasOne("PSP.Models.Employee", "employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PSP.Models.Location", "location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("employee");
-
-                    b.Navigation("location");
-                });
-
-            modelBuilder.Entity("PSP.Models.EmployeeShift", b =>
-                {
-                    b.HasOne("PSP.Models.Employee", "employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PSP.Models.Shift", "shift")
-                        .WithMany()
-                        .HasForeignKey("ShiftId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("employee");
-
-                    b.Navigation("shift");
                 });
 
             modelBuilder.Entity("PSP.Models.Permission", b =>

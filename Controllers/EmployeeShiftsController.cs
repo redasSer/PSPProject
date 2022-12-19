@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
-using PSP.entity;
 using PSP.Models;
 
 namespace PSP.Controllers;
 
-    [Route("api/[controller]")]
+[Route("api/[controller]")]
     [ApiController]
     public class EmployeeShiftsController : ControllerBase
     {

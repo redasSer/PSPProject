@@ -30,9 +30,12 @@ namespace PSP.Models
 
         [JsonProperty("roleId")]
         public Guid RoleId { get; set; }
+        internal virtual Role role { get; set; }
 
         [JsonProperty("locationId")]
         public Guid LocationId { get; set; }
+        internal virtual Location location { get; set; }
+
 
         [JsonProperty("email")]
         public string? Email { get; set; }
