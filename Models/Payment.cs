@@ -4,7 +4,7 @@ using PSP.Enums;
 
 namespace PSP.Models;
 
-[Table("Customer")]
+[Table("Payment")]
 public class Payment
 {
     public Guid id { get; set; }
