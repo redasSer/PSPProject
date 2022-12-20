@@ -9,11 +9,11 @@ namespace PSP.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CollectedLoyaltyRewards
+public class CollectedLoyaltyRewardsController
 {
     private readonly ICollectedLoyaltyRewardsService _collectedLoyaltyRewardsService;
     
-    public CollectedLoyaltyRewards(ICollectedLoyaltyRewardsService collectedLoyaltyRewardsService)
+    public CollectedLoyaltyRewardsController(ICollectedLoyaltyRewardsService collectedLoyaltyRewardsService)
     {
         _collectedLoyaltyRewardsService = collectedLoyaltyRewardsService;
     }
