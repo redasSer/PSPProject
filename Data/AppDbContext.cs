@@ -19,6 +19,7 @@ namespace PSP.Data;
         public DbSet<Modifier> Modifiers { get; set; }
         public DbSet<OrderedItemModification> OrderedItemModifications { get; set; }
 
+        public DbSet<CollectedLoyaltyReward> CollectedLoyaltyRewards { get; set; }
 
 
 
