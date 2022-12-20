@@ -73,7 +73,7 @@ namespace PSP.Controllers
 
             return NoContent();
         }
-        [HttpPut("{id}/Stutus/{status}")]
+        [HttpPut("{id}/Status/{status}")]
         public async Task<IActionResult> PutEmployeeCardStatus(Guid id,int status)
         {
 
