@@ -22,6 +22,8 @@ namespace PSP.Data;
         public DbSet<CollectedLoyaltyReward> CollectedLoyaltyRewards { get; set; }
         
         public DbSet<LoyaltyCard> LoyaltyCards { get; set; }
+        
+        public DbSet<Payment> Payments { get; set; }
 
 
 
