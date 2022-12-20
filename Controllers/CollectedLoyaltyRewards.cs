@@ -36,9 +36,9 @@ public class CollectedLoyaltyRewards
         return _collectedLoyaltyRewardsService.Create(collectedLoyaltyReward);
     }
     
-    [HttpDelete("{id:guid}")]
-    public void Delete(Guid id)
+    [HttpDelete("/order/{orderid:guid}/reward/{rewardid:guid}")]
+    public void Delete(Guid orderid, Guid rewardid)
     {
-        _collectedLoyaltyRewardsService.Delete(id);
+        _collectedLoyaltyRewardsService.Delete(orderid, rewardid);
     }
 }

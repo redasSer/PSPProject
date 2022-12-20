@@ -41,9 +41,9 @@ public class CollectedLoyaltyRewardsService : ICollectedLoyaltyRewardsService
         return newCollectedLoyaltyReward;
     }
 
-    public void Delete(Guid guid)
+    public void Delete(Guid orderid, Guid rewardid)
     {
-        CollectedLoyaltyReward collectedLoyaltyReward = _db.CollectedLoyaltyRewards.Find(guid);
+        CollectedLoyaltyReward collectedLoyaltyReward = _db.CollectedLoyaltyRewards.Find(orderid, rewardid);
         _db.CollectedLoyaltyRewards.Remove(collectedLoyaltyReward);
         _db.SaveChanges();
     }

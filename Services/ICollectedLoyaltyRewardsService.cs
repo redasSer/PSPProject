@@ -12,5 +12,5 @@ public interface ICollectedLoyaltyRewardsService
     
     CollectedLoyaltyReward Create(CollectedLoyaltyReward collectedLoyaltyReward);
     
-    void Delete(Guid guid);
+    void Delete(Guid orderid, Guid rewardid);
 }
