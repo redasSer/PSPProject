@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221215172412_Inventory")]
+    partial class Inventory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -142,71 +145,6 @@ namespace PSP.Migrations
                     b.HasKey("ItemId");
 
                     b.ToTable("Inventory");
-                });
-
-            modelBuilder.Entity("PSP.Models.InventoryUsage", b =>
-                {
-                    b.Property<Guid>("InventoryUsageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("CatalogueItemId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("InventoryUsageId");
-
-                    b.ToTable("InventoryUsage");
-                });
-
-            modelBuilder.Entity("PSP.Models.Modifier", b =>
-                {
-                    b.Property<Guid>("ModifierId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("CatalogueItemId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("LoyaltyPointsModifier")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PriceModifier")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ModifierId");
-
-                    b.ToTable("Modifier");
-                });
-
-            modelBuilder.Entity("PSP.Models.OrderedItemModification", b =>
-                {
-                    b.Property<Guid>("OrderedItemId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ModifierId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("OrderedItemId", "ModifierId");
-
-                    b.ToTable("OrderedItemModification");
                 });
 
             modelBuilder.Entity("PSP.Models.Permission", b =>

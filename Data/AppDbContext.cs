@@ -13,9 +13,11 @@ namespace PSP.Data;
         public DbSet<Role> Roles { get; set; }
         public DbSet<PermissionType> PermissionTypes { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-
-
-
+        public DbSet<CatalogueItem> CatalogueItems { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<InventoryUsage> InventoryUsages { get; set; }
+        public DbSet<Modifier> Modifiers { get; set; }
+        public DbSet<OrderedItemModification> OrderedItemModifications { get; set; }
 
 
 

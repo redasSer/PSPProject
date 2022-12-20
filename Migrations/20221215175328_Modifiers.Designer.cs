@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221215175328_Modifiers")]
+    partial class Modifiers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -194,19 +197,6 @@ namespace PSP.Migrations
                     b.HasKey("ModifierId");
 
                     b.ToTable("Modifier");
-                });
-
-            modelBuilder.Entity("PSP.Models.OrderedItemModification", b =>
-                {
-                    b.Property<Guid>("OrderedItemId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ModifierId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("OrderedItemId", "ModifierId");
-
-                    b.ToTable("OrderedItemModification");
                 });
 
             modelBuilder.Entity("PSP.Models.Permission", b =>
