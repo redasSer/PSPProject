@@ -36,6 +36,10 @@ namespace PSP.Services
         public EmployeeCard Create(EmployeeCard employeeCard)
         {
             employeeCard.EmployeeCardId = new Guid();
+            if (employeeCard.Status > Enum.GetValues(typeof(CardStatus)).Cast<CardStatus>().Max())
+            {
+                throw new SqlException("Bad query parameters. Card status out of range");
+            }
             try
             {
                 _context.Add<EmployeeCard>(employeeCard);

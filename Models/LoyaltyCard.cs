@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PSP.Enums;
 
@@ -7,6 +8,7 @@ namespace PSP.Models;
 [Table("LoyaltyCard")]
 public class LoyaltyCard
 {
+    [Key]
     public Guid cardId { get; set; }
     public Guid customerId { get; set; }
     public Guid clientId { get; set; }

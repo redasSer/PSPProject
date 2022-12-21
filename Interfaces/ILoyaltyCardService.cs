@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PSP.Enums;
 using PSP.Models;
 
-namespace PSP.Services;
+namespace PSP.Interfaces;
 
 public interface ILoyaltyCardService
 {

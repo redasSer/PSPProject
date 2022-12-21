@@ -37,33 +37,6 @@ namespace PSP.Migrations
                     b.ToTable("Booking");
                 });
 
-            modelBuilder.Entity("PSP.Models.Client", b =>
-                {
-                    b.Property<Guid>("clientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("address")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("currency")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("phoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("timezone")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("clientId");
-
-                    b.ToTable("Client");
             modelBuilder.Entity("PSP.Models.CatalogueItem", b =>
                 {
                     b.Property<Guid>("CatalogueItemId")
@@ -91,6 +64,48 @@ namespace PSP.Migrations
                     b.HasKey("CatalogueItemId");
 
                     b.ToTable("CatalogueItem");
+                });
+
+            modelBuilder.Entity("PSP.Models.Client", b =>
+                {
+                    b.Property<Guid>("clientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("currency")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("phoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("timezone")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("clientId");
+
+                    b.ToTable("Client");
+                });
+
+            modelBuilder.Entity("PSP.Models.CollectedLoyaltyReward", b =>
+                {
+                    b.Property<Guid>("orderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("loyaltyRewardId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("orderId", "loyaltyRewardId");
+
+                    b.ToTable("CollectedLoyaltyReward");
                 });
 
             modelBuilder.Entity("PSP.Models.Employee", b =>
@@ -161,7 +176,7 @@ namespace PSP.Migrations
 
             modelBuilder.Entity("PSP.Models.EmployeeShift", b =>
                 {
-                    b.Property<Guid>("EmployeeShiftsId")
+                    b.Property<Guid>("EmployeeShiftId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -174,7 +189,7 @@ namespace PSP.Migrations
                     b.Property<DateTime>("WorkDay")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("EmployeeShiftsId");
+                    b.HasKey("EmployeeShiftId");
 
                     b.HasIndex("EmployeeId");
 
@@ -183,13 +198,6 @@ namespace PSP.Migrations
                     b.ToTable("EmployeeShift");
                 });
 
-            modelBuilder.Entity("PSP.Models.Location", b =>
-                {
-                    b.Property<Guid>("LocationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Address")
             modelBuilder.Entity("PSP.Models.Inventory", b =>
                 {
                     b.Property<Guid>("ItemId")
@@ -225,6 +233,26 @@ namespace PSP.Migrations
                     b.Property<Guid>("ClientId")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("InventoryUsageId");
+
+                    b.ToTable("InventoryUsage");
+                });
+
+            modelBuilder.Entity("PSP.Models.Location", b =>
+                {
+                    b.Property<Guid>("LocationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -243,12 +271,29 @@ namespace PSP.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Locations");
-                    b.Property<Guid>("ItemId")
+                });
+
+            modelBuilder.Entity("PSP.Models.LoyaltyCard", b =>
+                {
+                    b.Property<Guid>("cardId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("InventoryUsageId");
+                    b.Property<Guid>("clientId")
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("InventoryUsage");
+                    b.Property<Guid>("customerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("loyaltyPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("cardId");
+
+                    b.ToTable("LoyaltyCard");
                 });
 
             modelBuilder.Entity("PSP.Models.Modifier", b =>
@@ -291,6 +336,38 @@ namespace PSP.Migrations
                     b.HasKey("OrderedItemId", "ModifierId");
 
                     b.ToTable("OrderedItemModification");
+                });
+
+            modelBuilder.Entity("PSP.Models.Payment", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("clientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("comment")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("method")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("orderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("PSP.Models.Permission", b =>
@@ -369,6 +446,29 @@ namespace PSP.Migrations
                     b.HasKey("ShiftId");
 
                     b.ToTable("Shift");
+                });
+
+            modelBuilder.Entity("PSP.Models.Station", b =>
+                {
+                    b.Property<Guid>("stationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("employeeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("locationId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("seats")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("stationId");
+
+                    b.ToTable("Station");
                 });
 
             modelBuilder.Entity("PSP.Models.Employee", b =>

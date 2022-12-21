@@ -8,6 +8,7 @@ namespace PSP.Models;
 public class Booking
 {
     [Required]
+    [Key]
     public Guid bookingId { get; set; }
     
     [Required]

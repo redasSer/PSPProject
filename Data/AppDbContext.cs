@@ -21,13 +21,9 @@ public class AppDbContext : DbContext
         public DbSet<InventoryUsage> InventoryUsages { get; set; }
         public DbSet<Modifier> Modifiers { get; set; }
         public DbSet<OrderedItemModification> OrderedItemModifications { get; set; }
-
         public DbSet<CollectedLoyaltyReward> CollectedLoyaltyRewards { get; set; }
-        
         public DbSet<LoyaltyCard> LoyaltyCards { get; set; }
-        
         public DbSet<Payment> Payments { get; set; }
-        
         public DbSet<Station> Stations { get; set; }
 
 
