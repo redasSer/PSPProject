@@ -5,17 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PSP.Models;
 
 [Table("CatalogueItem")]
-public class CatalogueItemModel
+public class CatalogueItem
 {
     [Required]
-    public Guid catalogueItemId { get; set; }
-    public Guid clientId { get; set; }
-    public string name { get; set; }
-    public string category { get; set; }
-    
-    [Required]
-    public double price { get; set; }
-    public int loyaltyPointsReward { get; set; }
-    public int tax { get; set; }
+    public Guid CatalogueItemId { get; set; }
+    public Guid ClientId { get; set; }
+    public string Name { get; set; }
+    public string Category { get; set; }
+    public double Price { get; set; }
+    public int LoyaltyPointsReward { get; set; }
+    public int Tax { get; set; }
     
 }

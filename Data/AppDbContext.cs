@@ -16,6 +16,19 @@ public class AppDbContext : DbContext
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<CatalogueItem> CatalogueItems { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<InventoryUsage> InventoryUsages { get; set; }
+        public DbSet<Modifier> Modifiers { get; set; }
+        public DbSet<OrderedItemModification> OrderedItemModifications { get; set; }
+
+        public DbSet<CollectedLoyaltyReward> CollectedLoyaltyRewards { get; set; }
+        
+        public DbSet<LoyaltyCard> LoyaltyCards { get; set; }
+        
+        public DbSet<Payment> Payments { get; set; }
+        
+        public DbSet<Station> Stations { get; set; }
 
 
 
