@@ -8,6 +8,7 @@ namespace PSP.Models;
 public class Modifier
 {
     [Required]
+    [Key]
     public Guid ModifierId { get; set; }
     public Guid CatalogueItemId { get; set; }
     public Guid ClientId { get; set; }

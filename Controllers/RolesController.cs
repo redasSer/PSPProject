@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
+using PSP.Services;
 
 namespace PSP.Controllers
 {
@@ -14,96 +17,79 @@ namespace PSP.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IRoleService _entityService;
 
-        public RolesController(AppDbContext context)
+        public RolesController(IRoleService entityService)
         {
-            _context = context;
+            _entityService = entityService;
         }
 
         // GET: api/Roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
+        public ActionResult<IEnumerable<Role>> GetRoles()
         {
-            return await _context.Roles.ToListAsync();
+            return _entityService.GetAll();
         }
 
         // GET: api/Roles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Role>> GetRole(Guid id)
+        public ActionResult<Role> GetRole(Guid id)
         {
-            var role = await _context.Roles.FindAsync(id);
+            var entity = _entityService.GetById(id);
 
-            if (role == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return role;
+            return entity;
         }
 
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRole(Guid id, Role role)
+        public ActionResult<Role> PutRole(Guid id, Role Role)
         {
-            if (id != role.RoleId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(role).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _entityService.Update(id, Role);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!RoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
+            return Role;
         }
 
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Role>> PostRole(Role role)
+        public ActionResult<Role> PostRole(Role role)
         {
-            role.RoleId = new Guid();
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRole", new { id = role.RoleId }, role);
+            try
+            {
+                _entityService.Create(role);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return CreatedAtAction("GetRole", role);
         }
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRole(Guid id)
+        public IActionResult DeleteRole(Guid id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
+            try
             {
-                return NotFound();
+                _entityService.Delete(id);
             }
-
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
-
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
-        }
-
-        private bool RoleExists(Guid id)
-        {
-            return _context.Roles.Any(e => e.RoleId == id);
         }
     }
 }

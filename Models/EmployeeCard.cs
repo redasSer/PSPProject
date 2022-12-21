@@ -15,9 +15,11 @@ namespace PSP.Models
 
         [JsonProperty("locationId")]
         public Guid LocationId { get; set; }
+        internal virtual Location location { get; set; }
 
         [JsonProperty("employeeId")]
         public Guid EmployeeId { get; set; }
+        internal virtual Employee employee { get; set; }
 
         [JsonProperty("status")]
         public CardStatus Status { get; set; }

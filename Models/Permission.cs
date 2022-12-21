@@ -15,11 +15,14 @@ namespace PSP.Models
 
         [JsonProperty("roleId")]
         public Guid RoleId { get; set; }
+        internal virtual Role role { get; set; }
 
         [JsonProperty("clientId")]
         public Guid ClientId { get; set; }
+        internal virtual Client client { get; set; }
 
         [JsonProperty("permissionTypeId")]
         public Guid PermissionTypeId { get; set; }
+        internal virtual PermissionType permissionType { get; set; }
     }
 }

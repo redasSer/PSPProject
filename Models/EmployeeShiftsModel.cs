@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
-using PSP.entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,22 +31,22 @@ public class EmployeeShiftsModel
         var config = new MapperConfiguration(cfg =>
             cfg.CreateMap<EmployeeShiftsModel, EmployeeShift>()
             .ForMember(dest => dest.WorkDay, act => act.Ignore())
-            .ForMember(dest => dest.EmployeeShiftsId, act => act.Ignore()));
+            .ForMember(dest => dest.EmployeeShiftId, act => act.Ignore()));
         var mapper = new Mapper(config);
         EmployeeShift employeeShift = mapper.Map<EmployeeShiftsModel, EmployeeShift>(this);
 
         employeeShift.WorkDay = this.WorkDay.Convert();
         try
         {
-            employeeShift.EmployeeShiftsId = Guid.Parse(this.EmployeeShiftsId.ToString());
+            employeeShift.EmployeeShiftId = Guid.Parse(this.EmployeeShiftsId.ToString());
         }
         catch (ArgumentNullException)
         {
-            employeeShift.EmployeeShiftsId = new Guid();
+            employeeShift.EmployeeShiftId = new Guid();
         }
         catch (FormatException)
         {
-            employeeShift.EmployeeShiftsId = new Guid();
+            employeeShift.EmployeeShiftId = new Guid();
         }
 
         return employeeShift;

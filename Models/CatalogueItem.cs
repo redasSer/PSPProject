@@ -8,6 +8,7 @@ namespace PSP.Models;
 public class CatalogueItem
 {
     [Required]
+    [Key]
     public Guid CatalogueItemId { get; set; }
     public Guid ClientId { get; set; }
     public string Name { get; set; }

@@ -66,6 +66,48 @@ namespace PSP.Migrations
                     b.ToTable("CatalogueItem");
                 });
 
+            modelBuilder.Entity("PSP.Models.Client", b =>
+                {
+                    b.Property<Guid>("clientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("currency")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("phoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("timezone")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("clientId");
+
+                    b.ToTable("Client");
+                });
+
+            modelBuilder.Entity("PSP.Models.CollectedLoyaltyReward", b =>
+                {
+                    b.Property<Guid>("orderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("loyaltyRewardId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("orderId", "loyaltyRewardId");
+
+                    b.ToTable("CollectedLoyaltyReward");
+                });
+
             modelBuilder.Entity("PSP.Models.Employee", b =>
                 {
                     b.Property<Guid>("EmployeeId")
@@ -101,6 +143,10 @@ namespace PSP.Migrations
 
                     b.HasKey("EmployeeId");
 
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Employee");
                 });
 
@@ -121,7 +167,35 @@ namespace PSP.Migrations
 
                     b.HasKey("EmployeeCardId");
 
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LocationId");
+
                     b.ToTable("EmployeeCard");
+                });
+
+            modelBuilder.Entity("PSP.Models.EmployeeShift", b =>
+                {
+                    b.Property<Guid>("EmployeeShiftId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ShiftId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("WorkDay")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("EmployeeShiftId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ShiftId");
+
+                    b.ToTable("EmployeeShift");
                 });
 
             modelBuilder.Entity("PSP.Models.Inventory", b =>
@@ -167,6 +241,61 @@ namespace PSP.Migrations
                     b.ToTable("InventoryUsage");
                 });
 
+            modelBuilder.Entity("PSP.Models.Location", b =>
+                {
+                    b.Property<Guid>("LocationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Tax")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Timezone")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LocationId");
+
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("PSP.Models.LoyaltyCard", b =>
+                {
+                    b.Property<Guid>("cardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("clientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("customerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("loyaltyPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("cardId");
+
+                    b.ToTable("LoyaltyCard");
+                });
+
             modelBuilder.Entity("PSP.Models.Modifier", b =>
                 {
                     b.Property<Guid>("ModifierId")
@@ -209,6 +338,38 @@ namespace PSP.Migrations
                     b.ToTable("OrderedItemModification");
                 });
 
+            modelBuilder.Entity("PSP.Models.Payment", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("clientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("comment")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("method")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("orderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Payment");
+                });
+
             modelBuilder.Entity("PSP.Models.Permission", b =>
                 {
                     b.Property<Guid>("PermissionId")
@@ -225,6 +386,12 @@ namespace PSP.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("PermissionId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("PermissionTypeId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Permission");
                 });
@@ -257,6 +424,8 @@ namespace PSP.Migrations
 
                     b.HasKey("RoleId");
 
+                    b.HasIndex("ClientId");
+
                     b.ToTable("Role");
                 });
 
@@ -279,26 +448,122 @@ namespace PSP.Migrations
                     b.ToTable("Shift");
                 });
 
-            modelBuilder.Entity("PSP.entity.EmployeeShift", b =>
+            modelBuilder.Entity("PSP.Models.Station", b =>
                 {
-                    b.Property<Guid>("EmployeeShiftsId")
+                    b.Property<Guid>("stationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
+                    b.Property<Guid>("employeeId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ShiftId")
-                        .IsRequired()
+                    b.Property<Guid>("locationId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("WorkDay")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("seats")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("EmployeeShiftsId");
+                    b.Property<int>("status")
+                        .HasColumnType("INTEGER");
 
-                    b.ToTable("EmployeeShift");
+                    b.HasKey("stationId");
+
+                    b.ToTable("Station");
+                });
+
+            modelBuilder.Entity("PSP.Models.Employee", b =>
+                {
+                    b.HasOne("PSP.Models.Location", "location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PSP.Models.Role", "role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("location");
+
+                    b.Navigation("role");
+                });
+
+            modelBuilder.Entity("PSP.Models.EmployeeCard", b =>
+                {
+                    b.HasOne("PSP.Models.Employee", "employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PSP.Models.Location", "location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("employee");
+
+                    b.Navigation("location");
+                });
+
+            modelBuilder.Entity("PSP.Models.EmployeeShift", b =>
+                {
+                    b.HasOne("PSP.Models.Employee", "employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PSP.Models.Shift", "shift")
+                        .WithMany()
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("employee");
+
+                    b.Navigation("shift");
+                });
+
+            modelBuilder.Entity("PSP.Models.Permission", b =>
+                {
+                    b.HasOne("PSP.Models.Client", "client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PSP.Models.PermissionType", "permissionType")
+                        .WithMany()
+                        .HasForeignKey("PermissionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PSP.Models.Role", "role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("client");
+
+                    b.Navigation("permissionType");
+
+                    b.Navigation("role");
+                });
+
+            modelBuilder.Entity("PSP.Models.Role", b =>
+                {
+                    b.HasOne("PSP.Models.Client", "client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("client");
                 });
 #pragma warning restore 612, 618
         }
