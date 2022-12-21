@@ -6,46 +6,47 @@ using PSP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PSP.Services
 {
-    public class ClientService : IClientService
+    public class ShiftService : IShiftService
     {
         private readonly AppDbContext _context;
 
-        private IQueryable<Client> Clients => _context.Clients;
+        private IQueryable<Shift> Shifts => _context.Shifts;
 
-        public ClientService(AppDbContext context)
+        public ShiftService(AppDbContext context)
         {
             _context = context;
         }
 
-        public List<Client> GetAll()
+        public List<Shift> GetAll()
         {
-            return Clients.ToList();
+            return Shifts.ToList();
         }
 
-        public Client GetById(Guid id)
+        public Shift GetById(Guid id)
         {
-            return _context.Find<Client>(id);
+            return _context.Find<Shift>(id);
         }
 
-        public Client Create(Client client)
+        public Shift Create(Shift shift)
         {
-            client.clientId = new Guid();
-            _context.Add<Client>(client);
+            shift.ShiftId = new Guid();
+            _context.Add<Shift>(shift);
             _context.SaveChanges();
-            return client;
+            return shift;
         }
 
-        public Client Update(Guid id, Client client)
+        public Shift Update(Guid id, Shift shift)
         {
-            if (id != client.clientId)
+            if (id != shift.ShiftId)
             {
                 throw new SqlException("id does not match the received model id");
             }
 
-            _context.Entry(client).State = EntityState.Modified;
+            _context.Entry(shift).State = EntityState.Modified;
 
             try
             {
@@ -53,7 +54,7 @@ namespace PSP.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClientExists(id))
+                if (!entityExists(id))
                 {
                     throw new SqlException("Model with this id does not exist");
                 }
@@ -62,25 +63,25 @@ namespace PSP.Services
                     throw new SqlException("SQL ERROR");
                 }
             }
-            return client;
+            return shift;
         }
      
 
         public void Delete(Guid id)
         {
-            var client = _context.Clients.Find(id);
-            if (client == null)
+            var shift = _context.Shifts.Find(id);
+            if (shift == null)
             {
                 throw new SqlException("Model does not exists");
             }
 
-            _context.Clients.Remove(client);
+            _context.Shifts.Remove(shift);
             _context.SaveChanges();
         }
 
-        private bool ClientExists(Guid id)
+        private bool entityExists(Guid id)
         {
-            return _context.Clients.Any(e => e.clientId == id);
+            return _context.Shifts.Any(e => e.ShiftId == id);
         }
     }
 }

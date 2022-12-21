@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
+using PSP.Services;
 
 namespace PSP.Controllers
 {
@@ -14,96 +17,72 @@ namespace PSP.Controllers
     [ApiController]
     public class PermissionTypesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IPermissionTypeService _entityService;
 
-        public PermissionTypesController(AppDbContext context)
+        public PermissionTypesController(IPermissionTypeService entityService)
         {
-            _context = context;
+            _entityService = entityService;
         }
 
         // GET: api/PermissionTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PermissionType>>> GetPermissionTypes()
+        public ActionResult<IEnumerable<PermissionType>> GetPermissionTypes()
         {
-            return await _context.PermissionTypes.ToListAsync();
+            return _entityService.GetAll();
         }
 
         // GET: api/PermissionTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PermissionType>> GetPermissionType(Guid id)
+        public ActionResult<PermissionType> GetPermissionType(Guid id)
         {
-            var permissionType = await _context.PermissionTypes.FindAsync(id);
+            var entity = _entityService.GetById(id);
 
-            if (permissionType == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return permissionType;
+            return entity;
         }
 
         // PUT: api/PermissionTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPermissionType(Guid id, PermissionType permissionType)
+        public ActionResult<PermissionType> PutPermissionType(Guid id, PermissionType permissionType)
         {
-            if (id != permissionType.PermissionTypeId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(permissionType).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _entityService.Update(id, permissionType);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!PermissionTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
+            return permissionType;
         }
 
         // POST: api/PermissionTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PermissionType>> PostPermissionType(PermissionType permissionType)
+        public ActionResult<PermissionType> PostPermissionType(PermissionType permissionType)
         {
-            permissionType.PermissionTypeId = new Guid();
-            _context.PermissionTypes.Add(permissionType);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPermissionType", new { id = permissionType.PermissionTypeId }, permissionType);
+            _entityService.Create(permissionType);
+            return CreatedAtAction("GetPermissionType", permissionType);
         }
 
         // DELETE: api/PermissionTypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePermissionType(Guid id)
+        public IActionResult DeletePermissionType(Guid id)
         {
-            var permissionType = await _context.PermissionTypes.FindAsync(id);
-            if (permissionType == null)
+            try
             {
-                return NotFound();
+                _entityService.Delete(id);
             }
-
-            _context.PermissionTypes.Remove(permissionType);
-            await _context.SaveChangesAsync();
-
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
-        }
-
-        private bool PermissionTypeExists(Guid id)
-        {
-            return _context.PermissionTypes.Any(e => e.PermissionTypeId == id);
         }
     }
 }

@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
 using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
-using PSP.Services;
 
 namespace PSP.Controllers
 {

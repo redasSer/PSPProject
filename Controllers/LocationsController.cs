@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
 namespace PSP.Controllers
@@ -14,96 +14,79 @@ namespace PSP.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILocationService _entityService;
 
-        public LocationsController(AppDbContext context)
+        public LocationsController(ILocationService entityService)
         {
-            _context = context;
+            _entityService = entityService;
         }
 
         // GET: api/Locations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
+        public ActionResult<IEnumerable<Location>> GetLocations()
         {
-            return await _context.Locations.ToListAsync();
+            return _entityService.GetAll();
         }
 
         // GET: api/Locations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(Guid id)
+        public ActionResult<Location> GetLocation(Guid id)
         {
-            var location = await _context.Locations.FindAsync(id);
+            var entity = _entityService.GetById(id);
 
-            if (location == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return location;
+            return entity;
         }
 
         // PUT: api/Locations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(Guid id, Location location)
+        public ActionResult<Location> PutLocation(Guid id, Location location)
         {
-            if (id != location.LocationId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(location).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _entityService.Update(id, location);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!LocationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
+            return location;
         }
 
         // POST: api/Locations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(Location location)
+        public ActionResult<Location> PostLocation(Location location)
         {
-            location.LocationId = new Guid();
-            _context.Locations.Add(location);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetLocation", new { id = location.LocationId }, location);
+            try
+            {
+                _entityService.Create(location);
+                return CreatedAtAction("GetLocation", location);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/Locations/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocation(Guid id)
+        public IActionResult DeleteLocation(Guid id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            try
             {
-                return NotFound();
+                _entityService.Delete(id);
             }
-
-            _context.Locations.Remove(location);
-            await _context.SaveChangesAsync();
-
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
-        }
-
-        private bool LocationExists(Guid id)
-        {
-            return _context.Locations.Any(e => e.LocationId == id);
         }
     }
 }

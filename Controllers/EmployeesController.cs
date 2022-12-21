@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
+using PSP.Services;
 
 namespace PSP.Controllers
 {
@@ -14,98 +17,79 @@ namespace PSP.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IEmployeeService _entityService;
 
-        public EmployeesController(AppDbContext context)
+        public EmployeesController(IEmployeeService entityService)
         {
-            _context = context;
+            _entityService = entityService;
         }
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public ActionResult<IEnumerable<Employee>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return _entityService.GetAll();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(Guid id)
+        public ActionResult<Employee> GetEmployee(Guid id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var entity = _entityService.GetById(id);
 
-            if (employee == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return employee;
+            return entity;
         }
 
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(Guid id, Employee employee)
+        public ActionResult<Employee> PutEmployee(Guid id, Employee employee)
         {
-            if (id != employee.EmployeeId)
-            {
-                return BadRequest();
-            }
-            if (employee.Status > Enum.GetValues(typeof(Enums.EmployeeStatus)).Cast<Enums.EmployeeStatus>().Last()) return BadRequest("Bad status enum");
-
-            _context.Entry(employee).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _entityService.Update(id, employee);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
+            return employee;
         }
 
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public ActionResult<Employee> PostEmployee(Employee employee)
         {
-            employee.EmployeeId = new Guid();
-            if (employee.Status > Enum.GetValues(typeof(Enums.EmployeeStatus)).Cast<Enums.EmployeeStatus>().Last()) return BadRequest("Bad status enum");
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            try
+            {
+                _entityService.Create(employee);
+                return CreatedAtAction("GetEmployee", employee);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployee(Guid id)
+        public IActionResult DeleteEmployee(Guid id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            try
             {
-                return NotFound();
+                _entityService.Delete(id);
             }
-
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
-        }
-
-        private bool EmployeeExists(Guid id)
-        {
-            return _context.Employees.Any(e => e.EmployeeId == id);
         }
     }
 }

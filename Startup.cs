@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PSP.Data;
+using PSP.Interfaces;
 using PSP.Services;
 
 namespace PSP;
@@ -29,7 +30,17 @@ public class Startup
         services.AddDbContext<AppDbContext>();
         services.AddControllersWithViews();
         services.AddScoped<IBookingsService, BookingService>();
+        services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<IEmployeeCardService, EmployeeCardService>();
+        services.AddScoped<IEmployeeShiftService, EmployeeShiftService>();
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<ILocationService, LocationService>();
+        services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IShiftService, ShiftService>();
+        services.AddScoped<IPermissionService, PermissionService>();
+        services.AddScoped<IPermissionTypeService, PermissionTypeService>();
+
+
 
         services.AddSwaggerGen(c =>
         {

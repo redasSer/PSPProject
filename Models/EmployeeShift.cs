@@ -11,7 +11,7 @@ public class EmployeeShift
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
-    public Guid EmployeeShiftsId { get; set; }
+    public Guid EmployeeShiftId { get; set; }
 
     [Required]
     public Guid EmployeeId { get; set; }

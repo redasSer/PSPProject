@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
+using PSP.Migrations;
 using PSP.Models;
+using PSP.Services;
 
 namespace PSP.Controllers
 {
@@ -14,96 +18,79 @@ namespace PSP.Controllers
     [ApiController]
     public class PermissionsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IPermissionService _entityService;
 
-        public PermissionsController(AppDbContext context)
+        public PermissionsController(IPermissionService entityService)
         {
-            _context = context;
+            _entityService = entityService;
         }
 
         // GET: api/Permissions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Permission>>> GetPermissions()
+        public ActionResult<IEnumerable<Permission>> GetPermissions()
         {
-            return await _context.Permissions.ToListAsync();
+            return _entityService.GetAll();
         }
 
         // GET: api/Permissions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Permission>> GetPermission(Guid id)
+        public ActionResult<Permission> GetPermission(Guid id)
         {
-            var permission = await _context.Permissions.FindAsync(id);
+            var entity = _entityService.GetById(id);
 
-            if (permission == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return permission;
+            return entity;
         }
 
         // PUT: api/Permissions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPermission(Guid id, Permission permission)
+        public ActionResult<Permission> PutPermission(Guid id, Permission permission)
         {
-            if (id != permission.PermissionId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(permission).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _entityService.Update(id, permission);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!PermissionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
+            return permission;
         }
 
         // POST: api/Permissions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Permission>> PostPermission(Permission permission)
+        public ActionResult<Permission> PostPermission(Permission permission)
         {
-            permission.PermissionId = new Guid();
-            _context.Permissions.Add(permission);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPermission", new { id = permission.PermissionId }, permission);
+            try
+            {
+                _entityService.Create(permission);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return CreatedAtAction("GetPermission", permission);
         }
 
         // DELETE: api/Permissions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePermission(Guid id)
+        public IActionResult DeletePermission(Guid id)
         {
-            var permission = await _context.Permissions.FindAsync(id);
-            if (permission == null)
+            try
             {
-                return NotFound();
+                _entityService.Delete(id);
             }
-
-            _context.Permissions.Remove(permission);
-            await _context.SaveChangesAsync();
-
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
-        }
-
-        private bool PermissionExists(Guid id)
-        {
-            return _context.Permissions.Any(e => e.PermissionId == id);
         }
     }
 }

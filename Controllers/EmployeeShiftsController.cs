@@ -1,144 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
-namespace PSP.Controllers;
-
-[Route("api/[controller]")]
+namespace PSP.Controllers
+{
+    [Route("api/[controller]")]
     [ApiController]
     public class EmployeeShiftsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IEmployeeShiftService _entityService;
 
-        public EmployeeShiftsController(AppDbContext context)
+        public EmployeeShiftsController(IEmployeeShiftService entityService)
         {
-            _context = context;
+            _entityService = entityService;
         }
 
         // GET: api/EmployeeShifts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeShiftsModel>>> GetEmployeeShifts()
+        public ActionResult<IEnumerable<EmployeeShiftsModel>> GetEmployeeShifts()
         {
-            return EmployeeShiftsModel.Convert(await _context.EmployeeShifts.ToListAsync());
+            return EmployeeShiftsModel.Convert(_entityService.GetAll());
         }
 
         // GET: api/EmployeeShifts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<EmployeeShiftsModel>> GetEmployeeShift(string id)
+        public ActionResult<EmployeeShiftsModel> GetEmployeeShift(Guid id)
         {
-            var employeeShift = await _context.EmployeeShifts.FindAsync(id);
+            var entity = _entityService.GetById(id);
 
-            if (employeeShift == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return EmployeeShiftsModel.Convert(employeeShift);
+            return EmployeeShiftsModel.Convert(entity); ;
         }
 
         // PUT: api/EmployeeShifts/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployeeShift(string id, EmployeeShiftsModel employeeShiftsModel)
+        public ActionResult<EmployeeShiftsModel> PutEmployeeShift(Guid id, EmployeeShiftsModel employeeShiftmodel)
         {
+            try
+            {
+                EmployeeShift employeeShift = employeeShiftmodel.Convert();
+                _entityService.Update(id, employeeShift);
+                return EmployeeShiftsModel.Convert(employeeShift);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/EmployeeShifts
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<EmployeeShiftsModel> PostEmployeeShift(EmployeeShiftsModel employeeShiftsModel)
+        {
+            employeeShiftsModel.EmployeeShiftsId = new Guid();
             EmployeeShift employeeShift;
             try
             {
                 employeeShift = employeeShiftsModel.Convert();
-
+                _entityService.Create(employeeShift);
+                return CreatedAtAction("GetEmployeeShift", employeeShiftsModel);
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                Console.WriteLine(ex);
+                return BadRequest(ex);
+            }
+            catch (Exception)
+            {
                 return BadRequest();
             }
-            if (id != employeeShift.EmployeeShiftsId.ToString())
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(employeeShift).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmployeeShiftExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/EmployeeShifts
-        [HttpPost]
-        public async Task<ActionResult<EmployeeShiftsModel>> PostEmployeeShift(EmployeeShiftsModel employeeShiftsModel)
-        {
-        employeeShiftsModel.EmployeeShiftsId = new Guid();
-        EmployeeShift employeeShift;
-            try
-            {
-                employeeShift = employeeShiftsModel.Convert();
-
-            }
-            catch( Exception ex)
-            {
-                Console.WriteLine(ex);
-                return BadRequest();
-            }
-
-            _context.EmployeeShifts.Add(employeeShift);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (EmployeeShiftExists(employeeShift.EmployeeShiftsId.ToString()))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetEmployeeShift", new { id = employeeShift.EmployeeShiftsId }, employeeShift);
         }
 
         // DELETE: api/EmployeeShifts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployeeShift(string id)
+        public IActionResult DeleteEmployeeShift(Guid id)
         {
-            var employeeShift = await _context.EmployeeShifts.FindAsync(id);
-            if (employeeShift == null)
+            try
             {
-                return NotFound();
+                _entityService.Delete(id);
             }
-
-            _context.EmployeeShifts.Remove(employeeShift);
-            await _context.SaveChangesAsync();
-
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
         }
-
-        private bool EmployeeShiftExists(string id)
-        {
-            return _context.EmployeeShifts.Any(e => e.EmployeeShiftsId.ToString() == id);
-        }
     }
-
+}

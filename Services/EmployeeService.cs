@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Enums;
 using PSP.Exceptions;
 using PSP.Interfaces;
 using PSP.Models;
@@ -10,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace PSP.Services
 {
-    public class ClientService : IEmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private readonly AppDbContext _context;
 
         private IQueryable<Employee> Employees => _context.Employees;
 
-        public ClientService(AppDbContext context)
+
+        public EmployeeService(AppDbContext context)
         {
             _context = context;
         }
@@ -33,9 +35,20 @@ namespace PSP.Services
 
         public Employee Create(Employee employee)
         {
+            if(employee.Status > Enum.GetValues(typeof(EmployeeStatus)).Cast<EmployeeStatus>().Last())
+            {
+                throw new SqlException("Bad query parameters. Employee status out of range");
+            }
             employee.EmployeeId = new Guid();
             _context.Add<Employee>(employee);
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                throw new SqlException("Bad query parameters. Possible reasons: RoleID does not exist and/or LocationID does not exist");
+            }
             return employee;
         }
 
@@ -44,6 +57,10 @@ namespace PSP.Services
             if (id != employee.EmployeeId)
             {
                 throw new SqlException("id does not match the received model id");
+            }
+            else if (employee.Status > Enum.GetValues(typeof(EmployeeStatus)).Cast<EmployeeStatus>().Last())
+            {
+                throw new SqlException("Bad query parameters. Employee status out of range");
             }
 
             _context.Entry(employee).State = EntityState.Modified;
@@ -63,6 +80,11 @@ namespace PSP.Services
                     throw new SqlException("SQL ERROR");
                 }
             }
+            catch (DbUpdateException ex)
+            {
+                throw new SqlException("Bad query body. Possible reasons: RoleID does not exist and/or LocationID does not exist");
+            }
+
             return employee;
         }
      
