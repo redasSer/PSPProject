@@ -39,6 +39,7 @@ public class Startup
         services.AddScoped<IShiftService, ShiftService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IPermissionTypeService, PermissionTypeService>();
+        services.AddScoped<ICatalogueItemService, CatalogueItemsService>();
 
 
 
