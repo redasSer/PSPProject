@@ -60,5 +60,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<EmployeeShift>().HasOne(v => v.shift).WithMany().HasForeignKey(v => v.ShiftId);
 
         modelBuilder.Entity<CatalogueItem>().HasOne(v => v.Client).WithMany().HasForeignKey(v => v.ClientId);
+
+        modelBuilder.Entity<Inventory>().HasOne(v => v.Location).WithMany().HasForeignKey(v => v.LocationId);
     }
 }
