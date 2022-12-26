@@ -70,5 +70,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Modifier>().HasOne(v => v.CatalogueItem).WithMany().HasForeignKey(v => v.CatalogueItemId);
         modelBuilder.Entity<Modifier>().HasOne(v => v.Client).WithMany().HasForeignKey(v => v.ClientId);
         modelBuilder.Entity<Modifier>().HasOne(v => v.Item).WithMany().HasForeignKey(v => v.ItemId);
+
+        modelBuilder.Entity<OrderedItemModification>().HasOne(v => v.OrderedItem).WithMany().HasForeignKey(v => v.OrderedItemId);
+        modelBuilder.Entity<OrderedItemModification>().HasOne(v => v.Modifier).WithMany().HasForeignKey(v => v.ModifierId);
     }
 }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
 namespace PSP.Controllers
@@ -13,25 +11,41 @@ namespace PSP.Controllers
     [ApiController]
     public class OrderedItemModificationsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IOrderedItemModificationService _orderedItemModificationService;
 
-        public OrderedItemModificationsController(AppDbContext context)
+        public OrderedItemModificationsController(IOrderedItemModificationService entityService)
         {
-            _context = context;
+            _orderedItemModificationService = entityService;
+        }
+
+        // POST: api/OrderedItemModifications
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<OrderedItemModification> PostOrderedItemModification(OrderedItemModification orderedItemModifications)
+        {
+            try
+            {
+                _orderedItemModificationService.Create(orderedItemModifications);
+                return CreatedAtAction("GetCatalogueItem", orderedItemModifications);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/OrderedItemModifications
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderedItemModification>>> GetOrderedItemModifications()
+        public ActionResult<IEnumerable<OrderedItemModification>> GetOrderedItemModifications()
         {
-            return await _context.OrderedItemModifications.ToListAsync();
+            return _orderedItemModificationService.GetAll();
         }
 
         // GET: api/OrderedItemModifications/5
         [HttpGet("{orderedItemId}")]
-        public async Task<ActionResult<IEnumerable<OrderedItemModification>>> GetOrderedItemModification(Guid orderedItemId)
+        public ActionResult<IEnumerable<OrderedItemModification>> GetOrderedItemModification(Guid orderedItemId)
         {
-            var orderedItemModifications = await _context.OrderedItemModifications.Where(item => item.OrderedItemId.Equals(orderedItemId)).ToListAsync();
+            var orderedItemModifications = _orderedItemModificationService.GetById(orderedItemId);
 
             if (orderedItemModifications == null)
             {
@@ -41,29 +55,18 @@ namespace PSP.Controllers
             return orderedItemModifications;
         }
 
-        // POST: api/OrderedItemModifications
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<OrderedItemModification>> PostOrderedItemModification(OrderedItemModification orderedItemModifications)
+        // DELETE: api/OrderedItemModifications/5/modifier/7
+        [HttpDelete("{orderedItemId}/modifier/{modifierId}")]
+        public ActionResult DeleteOrderedItemModification(Guid orderedItemIt, Guid modifierId)
         {
-            _context.OrderedItemModifications.Add(orderedItemModifications);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetOrderedItemModification", new { id = orderedItemModifications.OrderedItemId }, orderedItemModifications);
-        }
-
-        // DELETE: api/OrderedItemModifications/5
-        [HttpDelete("{modifierId}")]
-        public async Task<IActionResult> DeleteOrderedItemModification(Guid modifierId)
-        {
-            var orderedItemModification = await _context.OrderedItemModifications.Where(item => item.ModifierId.Equals(modifierId)).FirstOrDefaultAsync();
-            if (orderedItemModification == null)
+            try
             {
-                return NotFound();
+                _orderedItemModificationService.Delete(orderedItemIt, modifierId);
             }
-
-            _context.OrderedItemModifications.Remove(orderedItemModification);
-            await _context.SaveChangesAsync();
+            catch (SqlException ex)
+            {
+                return BadRequest($"Could not delete: {ex.Message}");
+            }
 
             return NoContent();
         }
