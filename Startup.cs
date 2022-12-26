@@ -41,6 +41,7 @@ public class Startup
         services.AddScoped<IPermissionTypeService, PermissionTypeService>();
         services.AddScoped<ICatalogueItemService, CatalogueItemsService>();
         services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<IInventoryUsageService, InventoryUsageService>();
 
 
         services.AddSwaggerGen(c =>

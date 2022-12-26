@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
 namespace PSP.Controllers
@@ -14,25 +11,41 @@ namespace PSP.Controllers
     [ApiController]
     public class InventoryUsagesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IInventoryUsageService _inventoryUsageService;
 
-        public InventoryUsagesController(AppDbContext context)
+        public InventoryUsagesController(IInventoryUsageService entityService)
         {
-            _context = context;
+            _inventoryUsageService = entityService;
+        }
+
+        // POST: api/InventoryUsages
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<InventoryUsage> PostInventoryUsage(InventoryUsage inventoryUsage)
+        {
+            try
+            {
+                _inventoryUsageService.Create(inventoryUsage);
+                return CreatedAtAction("GetInventoryUsage", inventoryUsage);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/InventoryUsages
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventoryUsage>>> GetInventoryUsages()
+        public ActionResult<IEnumerable<InventoryUsage>> GetInventoryUsages()
         {
-            return await _context.InventoryUsages.ToListAsync();
+            return _inventoryUsageService.GetAll();
         }
 
         // GET: api/InventoryUsages/5
         [HttpGet("{inventoryUsageId}")]
-        public async Task<ActionResult<InventoryUsage>> GetInventoryUsage(Guid inventoryUsageId)
+        public ActionResult<InventoryUsage> GetInventoryUsage(Guid inventoryUsageId)
         {
-            var inventoryUsage = await _context.InventoryUsages.FindAsync(inventoryUsageId);
+            var inventoryUsage = _inventoryUsageService.GetById(inventoryUsageId);
 
             if (inventoryUsage == null)
             {
@@ -45,65 +58,32 @@ namespace PSP.Controllers
         // PUT: api/InventoryUsages/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{inventoryUsageId}")]
-        public async Task<IActionResult> PutInventoryUsage(Guid inventoryUsageId, InventoryUsage inventoryUsage)
+        public ActionResult<InventoryUsage> PutInventoryUsage(Guid inventoryUsageId, InventoryUsage inventoryUsage)
         {
-            if (inventoryUsageId != inventoryUsage.InventoryUsageId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(inventoryUsage).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return _inventoryUsageService.Update(inventoryUsageId, inventoryUsage);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!InventoryUsageExists(inventoryUsageId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/InventoryUsages
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<InventoryUsage>> PostInventoryUsage(InventoryUsage inventoryUsage)
-        {
-            inventoryUsage.InventoryUsageId = new Guid();
-            _context.InventoryUsages.Add(inventoryUsage);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInventoryUsage", new { inventoryUsageId = inventoryUsage.InventoryUsageId }, inventoryUsage);
         }
 
         // DELETE: api/InventoryUsages/5
         [HttpDelete("{inventoryUsageId}")]
-        public async Task<IActionResult> DeleteInventoryUsage(Guid inventoryUsageId)
+        public ActionResult DeleteInventoryUsage(Guid inventoryUsageId)
         {
-            var inventoryUsage = await _context.InventoryUsages.FindAsync(inventoryUsageId);
-            if (inventoryUsage == null)
+            try
             {
-                return NotFound();
+                _inventoryUsageService.Delete(inventoryUsageId);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest($"Could not delete: {ex.Message}");
             }
 
-            _context.InventoryUsages.Remove(inventoryUsage);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool InventoryUsageExists(Guid inventoryUsageId)
-        {
-            return _context.InventoryUsages.Any(e => e.InventoryUsageId == inventoryUsageId);
         }
     }
 }

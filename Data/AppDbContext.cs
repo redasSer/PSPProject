@@ -62,5 +62,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<CatalogueItem>().HasOne(v => v.Client).WithMany().HasForeignKey(v => v.ClientId);
 
         modelBuilder.Entity<Inventory>().HasOne(v => v.Location).WithMany().HasForeignKey(v => v.LocationId);
+
+        modelBuilder.Entity<InventoryUsage>().HasOne(v => v.CatalogueItem).WithMany().HasForeignKey(v => v.CatalogueItemId);
+        modelBuilder.Entity<InventoryUsage>().HasOne(v => v.Client).WithMany().HasForeignKey(v => v.ClientId);
+        modelBuilder.Entity<InventoryUsage>().HasOne(v => v.Item).WithMany().HasForeignKey(v => v.ItemId);
     }
 }
