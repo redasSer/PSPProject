@@ -42,6 +42,7 @@ public class Startup
         services.AddScoped<ICatalogueItemService, CatalogueItemsService>();
         services.AddScoped<IInventoryService, InventoryService>();
         services.AddScoped<IInventoryUsageService, InventoryUsageService>();
+        services.AddScoped<IModifierService, ModifierService>();
 
 
         services.AddSwaggerGen(c =>

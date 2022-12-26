@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
 namespace PSP.Controllers
@@ -14,25 +16,41 @@ namespace PSP.Controllers
     [ApiController]
     public class ModifiersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IModifierService _modifierService;
 
-        public ModifiersController(AppDbContext context)
+        public ModifiersController(IModifierService entityService)
         {
-            _context = context;
+            _modifierService = entityService;
+        }
+
+        // POST: api/Modifiers
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<Modifier> PostModifier(Modifier modifier)
+        {
+            try
+            {
+                _modifierService.Create(modifier);
+                return CreatedAtAction("GetModifier", modifier);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Modifiers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Modifier>>> GetModifiers()
+        public ActionResult<IEnumerable<Modifier>> GetModifiers()
         {
-            return await _context.Modifiers.ToListAsync();
+            return _modifierService.GetAll();
         }
 
         // GET: api/Modifiers/5
         [HttpGet("{modifierId}")]
-        public async Task<ActionResult<Modifier>> GetModifier(Guid modifierId)
+        public ActionResult<Modifier> GetModifier(Guid modifierId)
         {
-            var modifier = await _context.Modifiers.FindAsync(modifierId);
+            var modifier = _modifierService.GetById(modifierId);
 
             if (modifier == null)
             {
@@ -45,65 +63,32 @@ namespace PSP.Controllers
         // PUT: api/Modifiers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{modifierId}")]
-        public async Task<IActionResult> PutInventory(Guid modifierId, Modifier modifier)
+        public ActionResult<Modifier> PutModifier(Guid modifierId, Modifier modifier)
         {
-            if (modifierId != modifier.ModifierId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(modifier).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return _modifierService.Update(modifierId, modifier);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!ModifierExists(modifierId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Modifiers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Modifier>> PostModifier(Modifier modifier)
-        {
-            modifier.ModifierId = new Guid();
-            _context.Modifiers.Add(modifier);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetModifier", new { modifierId = modifier.ModifierId }, modifier);
         }
 
         // DELETE: api/Modifiers/5
         [HttpDelete("{modifierId}")]
-        public async Task<IActionResult> DeleteModifier(Guid modifierId)
+        public ActionResult DeleteModifier(Guid modifierId)
         {
-            var modifier = await _context.Modifiers.FindAsync(modifierId);
-            if (modifier == null)
+            try
             {
-                return NotFound();
+                _modifierService.Delete(modifierId);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest($"Could not delete: {ex.Message}");
             }
 
-            _context.Modifiers.Remove(modifier);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool ModifierExists(Guid modifierId)
-        {
-            return _context.Modifiers.Any(e => e.ModifierId == modifierId);
         }
     }
 }
