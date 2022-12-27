@@ -44,13 +44,13 @@ public class Startup
         services.AddScoped<IInventoryUsageService, InventoryUsageService>();
         services.AddScoped<IModifierService, ModifierService>();
         services.AddScoped<IOrderedItemModificationService, OrderedItemModificationService>();
+        services.AddScoped<IDiscountCodeService, DiscountCodeService>();
 
 
         services.AddSwaggerGen(c =>
         {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v2" });
         });
-
 
     }
 
