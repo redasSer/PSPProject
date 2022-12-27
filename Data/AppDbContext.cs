@@ -26,6 +26,8 @@ public class AppDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Station> Stations { get; set; }
     public DbSet<DiscountCode> DiscountCodes { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderedItem> OrderedItems { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -77,5 +79,12 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<UsedDiscountCode>().HasOne(v => v.DiscountCode).WithMany().HasForeignKey(v => new { v.Code, v.ClientId });
         modelBuilder.Entity<UsedDiscountCode>().HasOne(v => v.Order).WithMany().HasForeignKey(v => v.OrderId);
+
+        modelBuilder.Entity<Order>().HasOne(v => v.Customer).WithMany().HasForeignKey(v => v.CustomerId);
+        modelBuilder.Entity<Order>().HasOne(v => v.Employee).WithMany().HasForeignKey(v => v.EmployeeId);
+
+        modelBuilder.Entity<OrderedItem>().HasOne(v => v.Location).WithMany().HasForeignKey(v => v.LocationId);
+        modelBuilder.Entity<OrderedItem>().HasOne(v => v.Order).WithMany().HasForeignKey(v => v.OrderId);
+        modelBuilder.Entity<OrderedItem>().HasOne(v => v.CatalogueItem).WithMany().HasForeignKey(v => v.CatalogueItemId);
     }
 }

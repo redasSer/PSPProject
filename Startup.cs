@@ -45,6 +45,7 @@ public class Startup
         services.AddScoped<IModifierService, ModifierService>();
         services.AddScoped<IOrderedItemModificationService, OrderedItemModificationService>();
         services.AddScoped<IDiscountCodeService, DiscountCodeService>();
+        services.AddScoped<IOrderService, OrderService>();
 
 
         services.AddSwaggerGen(c =>
