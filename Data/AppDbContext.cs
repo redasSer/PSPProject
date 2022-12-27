@@ -74,5 +74,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<OrderedItemModification>().HasOne(v => v.Modifier).WithMany().HasForeignKey(v => v.ModifierId);
 
         modelBuilder.Entity<DiscountCode>().HasOne(v => v.Client).WithMany().HasForeignKey(v => v.ClientId);
+
+        modelBuilder.Entity<UsedDiscountCode>().HasOne(v => v.DiscountCode).WithMany().HasForeignKey(v => new { v.Code, v.ClientId });
+        modelBuilder.Entity<UsedDiscountCode>().HasOne(v => v.Order).WithMany().HasForeignKey(v => v.OrderId);
     }
 }

@@ -10,11 +10,7 @@ namespace PSP.Models;
 [PrimaryKey(nameof(Code), nameof(ClientId))]
 public class DiscountCode
 {
-    [Required]
-    [Key]
     public string Code { get; set; }
-    [Required]
-    [Key]
     public Guid ClientId { get; set; }
     internal virtual Client Client { get; set; }
     public DateTime StartTime { get; set; }
