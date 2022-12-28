@@ -11,7 +11,7 @@ public class Inventory
     [Key]
     public Guid ItemId { get; set; }
     public Guid LocationId { get; set; }
+    internal virtual Location Location { get; set; }
     public string Item { get; set; }
     public int Amount { get; set; }
-    
 }

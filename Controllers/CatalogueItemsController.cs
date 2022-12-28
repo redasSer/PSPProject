@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
 namespace PSP.Controllers
@@ -14,25 +16,41 @@ namespace PSP.Controllers
     [ApiController]
     public class CatalogueItemsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ICatalogueItemService _catalogueItemService;
 
-        public CatalogueItemsController(AppDbContext context)
+        public CatalogueItemsController(ICatalogueItemService entityService)
         {
-            _context = context;
+            _catalogueItemService = entityService;
+        }
+
+        // POST: api/CatalogueItems
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<CatalogueItem> PostCatalogueItem(CatalogueItem catalogueItem)
+        {
+            try
+            {
+                _catalogueItemService.Create(catalogueItem);
+                return CreatedAtAction("GetCatalogueItem", catalogueItem);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/CatalogueItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CatalogueItem>>> GetCatalogueItems()
+        public ActionResult<IEnumerable<CatalogueItem>> GetCatalogueItems()
         {
-            return await _context.CatalogueItems.ToListAsync();
+            return _catalogueItemService.GetAll();
         }
 
         // GET: api/CatalogueItems/5
         [HttpGet("{catalogueItemId}")]
-        public async Task<ActionResult<CatalogueItem>> GetCatalogueItem(Guid catalogueItemId)
+        public ActionResult<CatalogueItem> GetCatalogueItem(Guid catalogueItemId)
         {
-            var catalogueItem = await _context.CatalogueItems.FindAsync(catalogueItemId);
+            var catalogueItem = _catalogueItemService.GetById(catalogueItemId);
 
             if (catalogueItem == null)
             {
@@ -45,65 +63,32 @@ namespace PSP.Controllers
         // PUT: api/CatalogueItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{catalogueItemId}")]
-        public async Task<IActionResult> PutCatalogueItem(Guid catalogueItemId, CatalogueItem catalogueItem)
+        public ActionResult<CatalogueItem> PutCatalogueItem(Guid catalogueItemId, CatalogueItem catalogueItem)
         {
-            if (catalogueItemId != catalogueItem.CatalogueItemId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(catalogueItem).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return _catalogueItemService.Update(catalogueItemId, catalogueItem);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!CatalogueItemExists(catalogueItemId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/CatalogueItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<CatalogueItem>> PostCatalogueItem(CatalogueItem catalogueItem)
-        {
-            catalogueItem.CatalogueItemId = new Guid();
-            _context.CatalogueItems.Add(catalogueItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCatalogueItem", new { catalogueItemId = catalogueItem.CatalogueItemId }, catalogueItem);
         }
 
         // DELETE: api/CatalogueItems/5
         [HttpDelete("{catalogueItemId}")]
-        public async Task<IActionResult> DeleteCatalogueItem(Guid catalogueItemId)
+        public ActionResult DeleteCatalogueItem(Guid catalogueItemId)
         {
-            var catalogueItem = await _context.CatalogueItems.FindAsync(catalogueItemId);
-            if (catalogueItem == null)
+            try
             {
-                return NotFound();
+                _catalogueItemService.Delete(catalogueItemId);
+            }
+            catch(SqlException ex)
+            {
+                return BadRequest($"Could not delete: {ex.Message}");
             }
 
-            _context.CatalogueItems.Remove(catalogueItem);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool CatalogueItemExists(Guid catalogueItemId)
-        {
-            return _context.CatalogueItems.Any(e => e.CatalogueItemId == catalogueItemId);
         }
     }
 }

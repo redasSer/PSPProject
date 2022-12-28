@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PSP.Data;
+using PSP.Exceptions;
+using PSP.Interfaces;
 using PSP.Models;
 
 namespace PSP.Controllers
@@ -14,25 +11,41 @@ namespace PSP.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IInventoryService _inventoryService;
 
-        public InventoryController(AppDbContext context)
+        public InventoryController(IInventoryService entityService)
         {
-            _context = context;
+            _inventoryService = entityService;
+        }
+
+        // POST: api/Inventory
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public ActionResult<Inventory> PostInventory(Inventory inventory)
+        {
+            try
+            {
+                _inventoryService.Create(inventory);
+                return CreatedAtAction("GetInventory", inventory);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Inventory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventory()
+        public ActionResult<IEnumerable<Inventory>> GetInventory()
         {
-            return await _context.Inventory.ToListAsync();
+            return _inventoryService.GetAll();
         }
 
         // GET: api/Inventory/5
-        [HttpGet("{inventoryId}")]
-        public async Task<ActionResult<Inventory>> GetInventory(Guid inventoryId)
+        [HttpGet("{itemId}")]
+        public ActionResult<Inventory> GetInventory(Guid itemId)
         {
-            var inventory = await _context.Inventory.FindAsync(inventoryId);
+            var inventory = _inventoryService.GetById(itemId);
 
             if (inventory == null)
             {
@@ -44,66 +57,33 @@ namespace PSP.Controllers
 
         // PUT: api/Inventory/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{inventoryId}")]
-        public async Task<IActionResult> PutInventory(Guid inventoryId, Inventory inventory)
+        [HttpPut("{itemId}")]
+        public ActionResult<Inventory> PutInventory(Guid itemId, Inventory inventory)
         {
-            if (inventoryId != inventory.ItemId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(inventory).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return _inventoryService.Update(itemId, inventory);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex)
             {
-                if (!InventoryExists(inventoryId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Inventory
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
-        {
-            inventory.ItemId = new Guid();
-            _context.Inventory.Add(inventory);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInventory", new { inventoryId = inventory.ItemId }, inventory);
         }
 
         // DELETE: api/Inventory/5
         [HttpDelete("{inventoryId}")]
-        public async Task<IActionResult> DeleteInventory(Guid inventoryId)
+        public ActionResult DeleteInventory(Guid itemId)
         {
-            var inventory = await _context.Inventory.FindAsync(inventoryId);
-            if (inventory == null)
+            try
             {
-                return NotFound();
+                _inventoryService.Delete(itemId);
+            }
+            catch(SqlException ex)
+            {
+                return BadRequest($"Could not delete: {ex.Message}");
             }
 
-            _context.Inventory.Remove(inventory);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool InventoryExists(Guid inventoryId)
-        {
-            return _context.Inventory.Any(e => e.ItemId == inventoryId);
         }
     }
 }

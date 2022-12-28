@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221227150206_UsedDiscountCode")]
+    partial class UsedDiscountCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -108,41 +111,6 @@ namespace PSP.Migrations
                     b.HasKey("orderId", "loyaltyRewardId");
 
                     b.ToTable("CollectedLoyaltyReward");
-                });
-
-            modelBuilder.Entity("PSP.Models.Customer", b =>
-                {
-                    b.Property<Guid>("customerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("clientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("firstName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("lastName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("password")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("phoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("status")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("username")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("customerId");
-
-                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("PSP.Models.DiscountCode", b =>
@@ -432,10 +400,6 @@ namespace PSP.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("EmployeeId");
-
                     b.ToTable("Order");
                 });
 
@@ -467,12 +431,6 @@ namespace PSP.Migrations
                         .HasColumnType("REAL");
 
                     b.HasKey("OrderedItemId");
-
-                    b.HasIndex("CatalogueItemId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderedItem");
                 });
@@ -785,52 +743,6 @@ namespace PSP.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("PSP.Models.Order", b =>
-                {
-                    b.HasOne("PSP.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PSP.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("PSP.Models.OrderedItem", b =>
-                {
-                    b.HasOne("PSP.Models.CatalogueItem", "CatalogueItem")
-                        .WithMany()
-                        .HasForeignKey("CatalogueItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PSP.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PSP.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CatalogueItem");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PSP.Models.OrderedItemModification", b =>

@@ -39,14 +39,19 @@ public class Startup
         services.AddScoped<IShiftService, ShiftService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IPermissionTypeService, PermissionTypeService>();
-
+        services.AddScoped<ICatalogueItemService, CatalogueItemsService>();
+        services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<IInventoryUsageService, InventoryUsageService>();
+        services.AddScoped<IModifierService, ModifierService>();
+        services.AddScoped<IOrderedItemModificationService, OrderedItemModificationService>();
+        services.AddScoped<IDiscountCodeService, DiscountCodeService>();
+        services.AddScoped<IOrderService, OrderService>();
 
 
         services.AddSwaggerGen(c =>
         {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v2" });
         });
-
 
     }
 
