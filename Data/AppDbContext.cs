@@ -29,6 +29,9 @@ public class AppDbContext : DbContext
     public DbSet<DiscountCode> DiscountCodes { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderedItem> OrderedItems { get; set; }
+    public DbSet<Subscriptions> Subscriptions { get; set; }
+    public DbSet<SubscriptionsType> SubscriptionsType { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
