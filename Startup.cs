@@ -48,6 +48,7 @@ public class Startup
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ICustomersService, CustomersService>();
         services.AddScoped<ISubscriptionsTypeService, SubscriptionsTypeService>();
+        services.AddScoped<ISubscriptionsService, SubscriptionsService>();
 
 
         services.AddSwaggerGen(c =>
