@@ -50,7 +50,7 @@ public class Startup
 
         services.AddSwaggerGen(c =>
         {
-                c.SwaggerDoc("v2", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v2" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v1" });
         });
 
     }
@@ -70,7 +70,7 @@ public class Startup
             app.UseHsts();
         }
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "MiddlewareExamples v2"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiddlewareExamples v1"));
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
