@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Client> Clients { get; set; }
+    public DbSet<Customer> Customers { get; set; }
     public DbSet<CatalogueItem> CatalogueItems { get; set; }
     public DbSet<Inventory> Inventory { get; set; }
     public DbSet<InventoryUsage> InventoryUsages { get; set; }
@@ -28,6 +29,9 @@ public class AppDbContext : DbContext
     public DbSet<DiscountCode> DiscountCodes { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderedItem> OrderedItems { get; set; }
+    public DbSet<Subscriptions> Subscriptions { get; set; }
+    public DbSet<SubscriptionsType> SubscriptionsType { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

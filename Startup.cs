@@ -46,7 +46,13 @@ public class Startup
         services.AddScoped<IOrderedItemModificationService, OrderedItemModificationService>();
         services.AddScoped<IDiscountCodeService, DiscountCodeService>();
         services.AddScoped<IOrderService, OrderService>();
-
+        services.AddScoped<ICustomersService, CustomersService>();
+        services.AddScoped<ISubscriptionsTypeService, SubscriptionsTypeService>();
+        services.AddScoped<ISubscriptionsService, SubscriptionsService>();
+        services.AddScoped<ICollectedLoyaltyRewardsService, CollectedLoyaltyRewardsService>();
+        services.AddScoped<IStationsService, StationsService>();
+        services.AddScoped<ILoyaltyCardService, LoyaltyCardService>();
+        services.AddScoped<IPaymentsService, PaymentsService>();
 
         services.AddSwaggerGen(c =>
         {
