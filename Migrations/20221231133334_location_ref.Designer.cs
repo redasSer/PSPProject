@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221231133334_location_ref")]
+    partial class locationref
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -625,48 +628,6 @@ namespace PSP.Migrations
                     b.HasKey("stationId");
 
                     b.ToTable("Station");
-                });
-
-            modelBuilder.Entity("PSP.Models.Subscriptions", b =>
-                {
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("SubscriptionTypeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ClientId", "SubscriptionTypeId");
-
-                    b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("PSP.Models.SubscriptionsType", b =>
-                {
-                    b.Property<Guid>("SubscriptionTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Period")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("QueryLimit")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SubscriptionTypeId");
-
-                    b.ToTable("SubscriptionsType");
                 });
 
             modelBuilder.Entity("PSP.Models.UsedDiscountCode", b =>

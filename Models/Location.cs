@@ -10,6 +10,8 @@ namespace PSP.Models
 
         [JsonProperty("clientId")]
         public Guid ClientId { get; set; }
+        internal virtual Client Client { get; set; }
+
 
         [JsonProperty("name")]
         public string? Name { get; set; }
