@@ -49,12 +49,16 @@ public class Startup
         services.AddScoped<ICustomersService, CustomersService>();
         services.AddScoped<ISubscriptionsTypeService, SubscriptionsTypeService>();
         services.AddScoped<ISubscriptionsService, SubscriptionsService>();
+        services.AddScoped<ICollectedLoyaltyRewardsService, CollectedLoyaltyRewardsService>();
+        services.AddScoped<IStationsService, StationsService>();
+        services.AddScoped<ILoyaltyCardService, LoyaltyCardService>();
+        services.AddScoped<IPaymentsService, PaymentsService>();
         services.AddScoped<ILoyaltyRewardsService, LoyaltyRewardsService>();
 
 
         services.AddSwaggerGen(c =>
         {
-                c.SwaggerDoc("v2", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v2" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v1" });
         });
 
     }
@@ -74,7 +78,7 @@ public class Startup
             app.UseHsts();
         }
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "MiddlewareExamples v2"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiddlewareExamples v1"));
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
