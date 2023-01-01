@@ -78,7 +78,7 @@ public class Startup
             app.UseHsts();
         }
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiddlewareExamples v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SusikurtiMainAPI v1"));
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
