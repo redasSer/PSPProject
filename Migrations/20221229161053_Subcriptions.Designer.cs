@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSP.Data;
 
@@ -10,9 +11,11 @@ using PSP.Data;
 namespace PSP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221229161053_Subcriptions")]
+    partial class Subcriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
@@ -342,8 +345,6 @@ namespace PSP.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.HasIndex("ClientId");
-
                     b.ToTable("Locations");
                 });
 
@@ -368,35 +369,6 @@ namespace PSP.Migrations
                     b.HasKey("cardId");
 
                     b.ToTable("LoyaltyCard");
-                });
-
-            modelBuilder.Entity("PSP.Models.LoyaltyRewards", b =>
-                {
-                    b.Property<Guid>("LoyaltyRewardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CatalogueItemId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("LoyaltyPointsCost")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LoyaltyRewardId");
-
-                    b.ToTable("LoyaltyRewards");
                 });
 
             modelBuilder.Entity("PSP.Models.Modifier", b =>
@@ -831,17 +803,6 @@ namespace PSP.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("PSP.Models.Location", b =>
-                {
-                    b.HasOne("PSP.Models.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("PSP.Models.Modifier", b =>

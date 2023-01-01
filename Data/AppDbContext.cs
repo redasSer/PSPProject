@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Client> Clients { get; set; }
+    public DbSet<Customer> Customers { get; set; }
     public DbSet<CatalogueItem> CatalogueItems { get; set; }
     public DbSet<Inventory> Inventory { get; set; }
     public DbSet<InventoryUsage> InventoryUsages { get; set; }
@@ -28,6 +29,10 @@ public class AppDbContext : DbContext
     public DbSet<DiscountCode> DiscountCodes { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderedItem> OrderedItems { get; set; }
+    public DbSet<Subscriptions> Subscriptions { get; set; }
+    public DbSet<SubscriptionsType> SubscriptionsType { get; set; }
+    public DbSet<LoyaltyRewards> LoyaltyRewards { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -86,5 +91,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<OrderedItem>().HasOne(v => v.Location).WithMany().HasForeignKey(v => v.LocationId);
         modelBuilder.Entity<OrderedItem>().HasOne(v => v.Order).WithMany().HasForeignKey(v => v.OrderId);
         modelBuilder.Entity<OrderedItem>().HasOne(v => v.CatalogueItem).WithMany().HasForeignKey(v => v.CatalogueItemId);
+
+        modelBuilder.Entity<Location>().HasOne(v => v.Client).WithMany().HasForeignKey(v => v.ClientId);
+
     }
 }
