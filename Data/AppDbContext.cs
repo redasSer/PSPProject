@@ -31,6 +31,7 @@ public class AppDbContext : DbContext
     public DbSet<OrderedItem> OrderedItems { get; set; }
     public DbSet<Subscriptions> Subscriptions { get; set; }
     public DbSet<SubscriptionsType> SubscriptionsType { get; set; }
+    public DbSet<LoyaltyRewards> LoyaltyRewards { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

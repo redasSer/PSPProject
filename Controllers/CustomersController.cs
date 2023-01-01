@@ -31,7 +31,7 @@ namespace PSP.Controllers
         {
             customer.customerId = new Guid();
             _customersService.Create(customer);
-            return CreatedAtAction("GetClient",
+            return CreatedAtAction("GetCustomer",
                                    customer);
         }
 

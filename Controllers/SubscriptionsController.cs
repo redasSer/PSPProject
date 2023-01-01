@@ -29,7 +29,7 @@ namespace PSP.Controllers
         public ActionResult<Subscriptions> PostSubscriptions(Subscriptions subscription)
         {
             _entityService.Create(subscription);
-            return CreatedAtAction("GetSubscriptions", subscription);
+            return CreatedAtAction("GetSubscriptionByClientIdAndTypeId", subscription);
         }
 
         [HttpGet("client/{clientId}")]
