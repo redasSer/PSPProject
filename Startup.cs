@@ -58,7 +58,7 @@ public class Startup
 
         services.AddSwaggerGen(c =>
         {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiddlewareExamples", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SusikurtiMainAPI", Version = "v1" });
         });
 
     }
