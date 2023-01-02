@@ -8,4 +8,4 @@ Install the Swashbuckle.AspNetCore package, which provides support for generatin
 
 Run the application using the dotnet command-line tool:
 'dotnet run' 
-This will start the web server and host your ASP.NET Core application. You can access the Swagger UI by navigating to http://localhost:<port>/swagger in your web browser, where <port> is the port number on which the application is running (e.g. 5000).
+This will start the web server and host your ASP.NET Core application. You can access the Swagger UI by navigating to http://localhost:(port)/swagger in your web browser, where (port) is the port number on which the application is running (e.g. 5000).
